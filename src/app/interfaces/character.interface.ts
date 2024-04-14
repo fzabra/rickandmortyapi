@@ -11,8 +11,18 @@ export interface TypeCharacter {
   name: string;
   status: string;
   species: string;
+  type: string;
   gender: string;
-  image: string;
+  origin: LocationInfo;
   location: LocationInfo;
-  origin: OriginInfo;
+  image: string;
+  episode: string[];
+  url: string;
+  created: string;
+  info: {
+    count: number;
+    pages: number;
+    next: string | null;
+    prev: string | null;
+  };
 }

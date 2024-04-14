@@ -1,9 +1,8 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { TypeCharacter } from '../../interfaces/character.interface';
 import { BASE_URL } from '../../utils/global';
-
 
 @Injectable({
   providedIn: 'root',
@@ -11,22 +10,13 @@ import { BASE_URL } from '../../utils/global';
 export class RickandmortyService {
   constructor(private http: HttpClient) {}
 
-  getListCharacters(page: number): Observable<any> {
-    return this.http.get<any>(`${BASE_URL}/character/?page=${page}`).pipe(
-      catchError(error => {
-        console.error('Erro ao obter a lista de personagens:', error);
-        throw error; // Rejeita o erro para que o componente que está chamando o serviço possa lidar com ele
-      })
-    );
+  getListCharacters(page: number) {
+    return this.http
+      .get<any>(BASE_URL + `/character/?page=${page}`)
+      .pipe((res) => res);
   }
 
-  searchCharactersByName(name: string): Observable<any> {
-    const params = new HttpParams().set('name', name); // Cria parâmetros para a busca por nome
-    return this.http.get<any>(`${BASE_URL}/character/`, { params }).pipe(
-      catchError(error => {
-        console.error('Erro ao buscar personagens pelo nome:', error);
-        throw error; // Rejeita o erro para que o componente que está chamando o serviço possa lidar com ele
-      })
-    );
+  searchCharacters(query: string): Observable<TypeCharacter[]> {
+    return this.http.get<TypeCharacter[]>(BASE_URL + `/character/?name=${query}`);
   }
 }
