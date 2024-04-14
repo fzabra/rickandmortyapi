@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ListComponent } from './list/list.component'
-import { SearchComponent } from './search/search.component'
 
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
@@ -15,7 +14,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive,
-    MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, SearchComponent, ListComponent],
+    MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, ListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.less'
 })
