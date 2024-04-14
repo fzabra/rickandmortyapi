@@ -4,7 +4,6 @@
 </mat-form-field>
 
 <div class="listCards">
-    <!-- Agora, itera sobre filteredCharacters em vez de listCharacters -->
     @for (item of filteredCharacters; track item.id) {
         <div (click)="detailCharacter(item.id)">
             <mat-card class="card-rickandmorty">

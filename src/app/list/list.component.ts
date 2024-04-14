@@ -4,16 +4,11 @@ import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatInputModule} from '@angular/material/input';
-
 import { RickandmortyService } from '../services/rickandmorty/rickandmorty.service';
-
 import { TypeCharacter } from '../interfaces/character.interface'
-
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
-
-import { debounceTime } from 'rxjs/operators'; // Importa debounceTime
-
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list',
@@ -33,12 +28,11 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCharacters(1);
-    // Assinando mudanças de valor do FormControl e aplicando debounceTime
     this.searchQueryControl.valueChanges.pipe(
-      debounceTime(300) // Aguarda 300ms após a última mudança
+      debounceTime(300)
     ).subscribe((value) => {
-      console.log("Aqui o valor", value); // Console.log quando o valor do controle de formulário é alterado
-      this.searchCharacters(); // Chama a função para filtrar os personagens
+      console.log("Aqui o valor", value);
+      this.searchCharacters();
     });
   }
 
@@ -52,7 +46,7 @@ export class ListComponent implements OnInit {
       next: (res) => {
         const data = res.results;
         this.listCharacters = data;
-        this.filteredCharacters = data; // Atualiza também a lista filtrada com os dados recebidos
+        this.filteredCharacters = data;
         this.page = page;
       },
       error: (e) => console.log(e),
