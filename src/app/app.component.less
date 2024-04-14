@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Creepster';
+  src: url('../assets/fonts/Creepster/Creepster-Regular.ttf') format('ttf'),
+       url('../assets/fonts/Creepster/Creepster-Regular.woff2') format('woff2'),
+       url('../assets/fonts/Creepster/Creepster-Regular.woff2') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 .toolbar {
     height:100px;
     background-color: #000;
@@ -30,6 +38,7 @@
 .container {
     height: 80%;
     background-color: #1F1F1F;
+    padding: 0 50px;
 }
 
 .drawer {
@@ -62,11 +71,16 @@
 
     .container {
         height: 95%;
+        padding: 0 10px;
     }
 }
 
 @media (min-width: 1900px){
   .toolbar{
+    padding: 0 20%;
+  }
+
+  .container{
     padding: 0 20%;
   }
 }
