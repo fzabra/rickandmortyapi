@@ -1,42 +1,38 @@
+<mat-form-field>
+    <mat-label>Input</mat-label>
+    <input matInput>
+</mat-form-field>
+<button mat-button color="primary">Primary</button>
+
 <div class="listCards">
-    <div *ngFor="let character of characters">
-        <p>{{ character.name }}</p>
-        <img [src]="character.image" alt="{{ character.name }}">
-      </div>
-    <mat-card class="card-rickandmorty">
-        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-        <mat-card-header>
-          <mat-card-title>Shiba Inu</mat-card-title>
-          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-actions>
-            <button mat-icon-button matTooltip="Basic" aria-label="Example icon-button with a heart icon">
-                <mat-icon>favorite</mat-icon>
+    @for (item of listCharacters; track item.id) {
+        <div (click)="detailCharacter(item.id)">
+            <mat-card class="card-rickandmorty">
+                <img mat-card-image src="{{ item.image }}" alt="{{ item.name }}">
+                <mat-card-header>
+                <mat-card-title>{{ item.name }}</mat-card-title>
+                <mat-card-subtitle>{{ item.species }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-actions>
+                    <button mat-icon-button matTooltip="Favoritos" aria-label="Favoritos">
+                        <mat-icon>favorite</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+        }
+        <div class="flex w-full p-1 justify-between">
+            <button
+              class="bg-gray-500 p-1 rounded-md hover:bg-gray-400 px-5"
+              (click)="getCharacters(page - 1)"
+            >
+              Anterior
             </button>
-        </mat-card-actions>
-      </mat-card>
-      <mat-card class="card-rickandmorty">
-          <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-          <mat-card-header>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-actions>
-            <button mat-icon-button matTooltip="Basic" aria-label="Example icon-button with a heart icon">
-                <mat-icon>favorite</mat-icon>
+            <button
+              class="bg-gray-500 p-1 rounded-md hover:bg-gray-400 px-5"
+              (click)="getCharacters(page + 1)"
+            >
+              Próxima
             </button>
-          </mat-card-actions>
-        </mat-card>
-        <mat-card class="card-rickandmorty">
-            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-            <mat-card-header>
-              <mat-card-title>Shiba Inu</mat-card-title>
-              <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-actions>
-                <button mat-icon-button matTooltip="Basic" aria-label="Example icon-button with a heart icon">
-                    <mat-icon>favorite</mat-icon>
-                </button>
-            </mat-card-actions>
-          </mat-card>
+          </div>
 </div>

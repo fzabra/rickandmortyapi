@@ -12,14 +12,14 @@
             mat-flat-button
             class="biggerbutton"
             routerLinkActive="mat-accent" 
-            routerLink="home">Home</button>
+            routerLink="home">HOME</button>
         </div>
         <div  class="toolBarButton">
             <button 
             mat-flat-button
             class="biggerbutton"
             routerLinkActive="mat-accent"
-            routerLink="content" >Content</button>    
+            routerLink="content" >FAVORITOS</button>    
         </div>
     </div>
 </mat-toolbar>
@@ -32,7 +32,7 @@
             mat-flat-button  
             routerLinkActive="mat-accent" 
         
-            routerLink="home" class="biggerbutton">Home</button>
+            routerLink="home" class="biggerbutton">HOME</button>
             </div>
             <div  class="drawerButton">
             <button 
@@ -40,12 +40,11 @@
             mat-flat-button  
             routerLinkActive="mat-accent" 
         
-            routerLink="content" class="biggerbutton">Content</button>    
+            routerLink="content" class="biggerbutton">FAVORITOS</button>    
             </div>
         </div>
     </mat-drawer>
     <mat-drawer-content>
-        <app-search></app-search>
         <app-list></app-list>
         <router-outlet></router-outlet>
     </mat-drawer-content>
