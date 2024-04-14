@@ -2,10 +2,10 @@
   <mat-label>Search</mat-label>
   <input matInput type="text" [formControl]="searchQueryControl">
 </mat-form-field>
-<button mat-button color="primary">Primary</button>
 
 <div class="listCards">
-    @for (item of listCharacters; track item.id) {
+    <!-- Agora, itera sobre filteredCharacters em vez de listCharacters -->
+    @for (item of filteredCharacters; track item.id) {
         <div (click)="detailCharacter(item.id)">
             <mat-card class="card-rickandmorty">
                 <img mat-card-image src="{{ item.image }}" alt="{{ item.name }}">
@@ -20,19 +20,19 @@
                 </mat-card-actions>
             </mat-card>
         </div>
-        }
-        <div class="flex w-full p-1 justify-between">
-            <button
-              class="bg-gray-500 p-1 rounded-md hover:bg-gray-400 px-5"
-              (click)="getCharacters(page - 1)"
-            >
-              Anterior
-            </button>
-            <button
-              class="bg-gray-500 p-1 rounded-md hover:bg-gray-400 px-5"
-              (click)="getCharacters(page + 1)"
-            >
-              Próxima
-            </button>
-          </div>
+    }
+    <div class="flex w-full p-1 justify-between">
+        <button
+          class="bg-gray-500 p-1 rounded-md hover:bg-gray-400 px-5"
+          (click)="getCharacters(page - 1)"
+        >
+          Anterior
+        </button>
+        <button
+          class="bg-gray-500 p-1 rounded-md hover:bg-gray-400 px-5"
+          (click)="getCharacters(page + 1)"
+        >
+          Próxima
+        </button>
+    </div>
 </div>

@@ -12,6 +12,8 @@ import { TypeCharacter } from '../interfaces/character.interface'
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 
+import { debounceTime } from 'rxjs/operators'; // Importa debounceTime
+
 
 @Component({
   selector: 'app-list',
@@ -23,6 +25,7 @@ import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 export class ListComponent implements OnInit {
   searchQueryControl = new FormControl('', Validators.minLength(3)) as FormControl<string>;
   searchQuery = '';
+  filteredCharacters: TypeCharacter[] = [];
   constructor(
     private rickandmortyService: RickandmortyService,
     private route: Router
@@ -30,17 +33,26 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCharacters(1);
+    // Assinando mudanças de valor do FormControl e aplicando debounceTime
+    this.searchQueryControl.valueChanges.pipe(
+      debounceTime(300) // Aguarda 300ms após a última mudança
+    ).subscribe((value) => {
+      console.log("Aqui o valor", value); // Console.log quando o valor do controle de formulário é alterado
+      this.searchCharacters(); // Chama a função para filtrar os personagens
+    });
   }
 
   page = 1;
   listCharacters: TypeCharacter[] = [];
 
   getCharacters(page: number) {
+    console.log('Obtendo personagens da página', page);
     const res = this.rickandmortyService.getListCharacters(page);
     res.subscribe({
       next: (res) => {
         const data = res.results;
         this.listCharacters = data;
+        this.filteredCharacters = data; // Atualiza também a lista filtrada com os dados recebidos
         this.page = page;
       },
       error: (e) => console.log(e),
@@ -52,20 +64,13 @@ export class ListComponent implements OnInit {
   }
 
   searchCharacters() {
-    if (this.searchQueryControl.value.trim() === '') {
-      this.getCharacters(1);
-      return;
-    }
-  
-    const query = this.searchQueryControl.value;
-    const res = this.rickandmortyService.searchCharacters(query);
-    res.subscribe(
-      (resData: TypeCharacter[]) => {
-        this.listCharacters = resData;
-      },
-      (error) => console.log(error),
-      () => {}
+    console.log('Buscando personagens...');
+    const query = this.searchQueryControl.value.trim().toLowerCase();
+    console.log('Query:', query);
+    this.filteredCharacters = this.listCharacters.filter(character =>
+      character.name.toLowerCase().includes(query)
     );
+    console.log('Personagens filtrados:', this.filteredCharacters);
   }
 }
 
