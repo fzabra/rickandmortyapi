@@ -79,20 +79,26 @@ export class ListComponent implements OnInit {
     console.log('Personagens filtrados:', this.filteredCharacters);
   }
 
+  private async getNameById(id: number): Promise<string> {
+    try {
+      const name = await this.rickandmortyService.getCharacterNameById(id).toPromise();
+      return name || '';
+    } catch (error) {
+      console.error('Erro ao obter o nome do personagem:', error);
+      return '';
+    }
+  }
+  
   toggleFavorite(id: number) {
     const index = this.favorites.findIndex(favorite => favorite.id === id);
     if (index > -1) {
       this.favorites.splice(index, 1);
     } else {
-      const name = this.getNameById(id);
-      this.favorites.push({ id, name });
+      this.getNameById(id).then(name => {
+        this.favorites.push({ id, name });
+      });
     }
     localStorage.setItem('favorites', JSON.stringify(this.favorites.map(favorite => favorite.id)));
-  }
-  private getNameById(id: number): string {
-    // Implemente a lógica para obter o nome do favorito com base no ID
-    // Por enquanto, vamos retornar uma string vazia
-    return '';
   }
 }
 
