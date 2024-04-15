@@ -22,7 +22,7 @@ export class ListComponent implements OnInit {
   searchQueryControl = new FormControl('', Validators.minLength(3)) as FormControl<string>;
   searchQuery = '';
   filteredCharacters: TypeCharacter[] = [];
-  favorites: { id: number, name: string }[] = [];
+  favorites: { id: number, name: string, image: string }[] = [];
   constructor(
     private rickandmortyService: RickandmortyService,
     private favoritesService: FavoritesService,
@@ -86,12 +86,12 @@ export class ListComponent implements OnInit {
     }
   }
   
-  toggleFavorite(id: number, name: string) {
+  toggleFavorite(id: number, name: string, image: string) {
     const index = this.favorites.findIndex(favorite => favorite.id === id);
     if (index > -1) {
-      this.favorites.splice(index, 1);
+        this.favorites.splice(index, 1);
     } else {
-      this.favorites.push({ id, name });
+        this.favorites.push({ id, name, image });
     }
     console.log('Favoritos atualizados:', this.favorites);
     localStorage.setItem('favorites', JSON.stringify(this.favorites));

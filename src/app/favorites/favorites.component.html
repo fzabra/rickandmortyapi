@@ -1,6 +1,11 @@
 <div *ngIf="favorites.length > 0">
     <div *ngFor="let favorite of favorites">
-      ID: {{ favorite.id }} - Nome: {{ favorite.name }}
+        <img mat-card-image src="{{ favorite.image }}" alt="{{ favorite.name }}">
+        <mat-card class="card-rickandmorty">
+            <mat-card-header>
+                <mat-card-title>{{ favorite.name }}</mat-card-title>
+            </mat-card-header>
+        </mat-card>
     </div>
   </div>
   <div *ngIf="favorites.length === 0">
