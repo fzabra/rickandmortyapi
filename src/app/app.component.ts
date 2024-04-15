@@ -7,7 +7,6 @@ import {MatButtonModule} from '@angular/material/button';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {MatDrawerMode, MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Adicione esta importação
 import { BooleanInput } from '@angular/cdk/coercion';
 import {BreakpointObserver} from '@angular/cdk/layout';
 
@@ -15,7 +14,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive,
-    MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, ListComponent, MatProgressSpinnerModule], // Adicione MatProgressSpinnerModule aqui
+    MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, ListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.less'
 })

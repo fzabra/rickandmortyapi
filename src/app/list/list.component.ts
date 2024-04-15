@@ -46,11 +46,9 @@ export class ListComponent implements OnInit {
       next: (res) => {
         const data = res.results;
         console.log('Data:', data); 
-        this.listCharacters = this.listCharacters.concat(data); // Concatenar os novos personagens aos personagens existentes
-        this.filteredCharacters = this.listCharacters; // Atualizar os personagens filtrados com todos os personagens
-        this.page = page;
+        this.listCharacters = this.listCharacters.concat(data);
+        this.filteredCharacters = this.listCharacters; 
   
-        // Se ainda houver mais páginas de personagens, faça outra chamada recursiva
         if (res.info.next) {
           const nextPage = page + 1;
           this.getCharacters(nextPage);
