@@ -1,54 +1,56 @@
-<mat-toolbar class="toolbar">
-    <img src="../../assets/images/Rick_and_Morty.svg" alt="Rick and Morty">
-    <button 
-        (click)="drawer.toggle()"
-        mat-icon-button
-        class="burger">
-        <mat-icon>menu</mat-icon>
-    </button>
-    <div class="deskMenu">
-        <div class="toolBarButton">
-            <button 
-            mat-flat-button
-            class="biggerbutton"
-            routerLinkActive="mat-accent" 
-            routerLink="home">HOME</button>
-        </div>
-        <div  class="toolBarButton">
-            <button 
-            mat-flat-button
-            class="biggerbutton"
-            routerLinkActive="mat-accent"
-            routerLink="content" >FAVORITOS</button>    
-        </div>
-    </div>
-</mat-toolbar>
-<mat-drawer-container class="container" [hasBackdrop]="mdcBackdrop">
-    <mat-drawer #drawer class="drawer"  [mode]="drawerMode">
-        <div class="sidenav-content">
-            <div class="drawerButton" >
-            <button 
+<router-outlet>
+    <mat-toolbar class="toolbar">
+        <img src="../../assets/images/Rick_and_Morty.svg" alt="Rick and Morty">
+        <button 
             (click)="drawer.toggle()"
-            mat-flat-button  
-            routerLinkActive="mat-accent" 
-        
-            routerLink="home" class="biggerbutton">HOME</button>
+            mat-icon-button
+            class="burger">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <div class="deskMenu">
+            <div class="toolBarButton">
+                <button 
+                mat-flat-button
+                class="biggerbutton"
+                routerLinkActive="mat-accent" 
+                routerLink="/">HOME</button>
             </div>
-            <div  class="drawerButton">
-            <button 
-            (click)="drawer.toggle()"
-            mat-flat-button  
-            routerLinkActive="mat-accent" 
-        
-            routerLink="content" class="biggerbutton">FAVORITOS</button>    
+            <div  class="toolBarButton">
+                <button 
+                mat-flat-button
+                class="biggerbutton"
+                routerLinkActive="mat-accent"
+                routerLink="favorites" >FAVORITOS</button>    
             </div>
         </div>
-    </mat-drawer>
-    <mat-drawer-content>
-        <app-list></app-list>
-        <router-outlet></router-outlet>
-    </mat-drawer-content>
-</mat-drawer-container>
-
+    </mat-toolbar>
+    <mat-drawer-container class="containear" [hasBackdrop]="mdcBackdrop">
+        <mat-drawer #drawer class="drawer"  [mode]="drawerMode">
+            <div class="sidenav-content">
+                <div class="drawerButton" >
+                <button 
+                (click)="drawer.toggle()"
+                mat-flat-button  
+                routerLinkActive="mat-accent" 
+            
+                routerLink="/" class="biggerbutton">HOME</button>
+                </div>
+                <div  class="drawerButton">
+                <button 
+                (click)="drawer.toggle()"
+                mat-flat-button  
+                routerLinkActive="mat-accent" 
+            
+                routerLink="content" class="biggerbutton"><a routerLink="/favorites">RickAndMorty</a>FAVORITOS</button>    
+                </div>
+            </div>
+        </mat-drawer>
+        @if((pathName === "/")){
+        <mat-drawer-content>
+            <app-list></app-list> 
+        </mat-drawer-content>
+    }
+    </mat-drawer-container>
+</router-outlet>
 
 

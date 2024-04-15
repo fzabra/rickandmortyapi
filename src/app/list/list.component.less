@@ -1,7 +1,8 @@
 .listCards{
-    display: flex;
-    flex-wrap: wrap;
-    gap:10px;
+    gap: 2.5rem;
+    padding: 0 14.5rem;
+    display: grid;
+    grid-template-columns: auto auto auto;
 }
 
 mat-card-title{
@@ -15,3 +16,12 @@ mat-card-title{
     min-height: 300px;
     min-width: 320px;
 }
+@media only screen and (max-width: 600px) {
+    .listCards {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 0;
+    }
+}
+

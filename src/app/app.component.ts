@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { ListComponent } from './list/list.component'
 
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -7,6 +7,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {MatDrawerMode, MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Adicione esta importação
 import { BooleanInput } from '@angular/cdk/coercion';
 import {BreakpointObserver} from '@angular/cdk/layout';
 
@@ -14,22 +15,26 @@ import {BreakpointObserver} from '@angular/cdk/layout';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive,
-    MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, ListComponent],
+    MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, ListComponent, MatProgressSpinnerModule], // Adicione MatProgressSpinnerModule aqui
   templateUrl: './app.component.html',
   styleUrl: './app.component.less'
 })
 export class AppComponent {
   title = 'rickandmortyapi';
+  pathName = '';
   mdcBackdrop: BooleanInput = false;
   drawerMode: MatDrawerMode = "push";
 
   readonly breakpoint$ = this.breakpointObserver
   .observe([ '(max-width: 500px)']);
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(private breakpointObserver: BreakpointObserver, private router: Router) {
     this.breakpoint$.subscribe(() =>
       this.breakpointChanges()
-  );
+    );
+    this.router.events.subscribe(() => {
+      this.pathName = this.router.url;
+    });
   }
 
   breakpointChanges(): void {

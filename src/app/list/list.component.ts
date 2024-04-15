@@ -73,6 +73,7 @@ export class ListComponent implements OnInit {
     );
     console.log('Personagens filtrados:', this.filteredCharacters);
   }
+  
 }
 
 
