@@ -5,7 +5,8 @@
 
 <div class="listCards">
     @for (item of filteredCharacters; track item.id) {
-        <div (click)="detailCharacter(item.id)">
+        <div>
+        <!-- <div (click)="detailCharacter(item.id)"> -->
             <mat-card class="card-rickandmorty">
                 <img mat-card-image src="{{ item.image }}" alt="{{ item.name }}">
                 <mat-card-header>

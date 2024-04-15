@@ -98,6 +98,7 @@ export class ListComponent implements OnInit {
         this.favorites.push({ id, name });
       });
     }
+    console.log('Favoritos atualizados:', this.favorites);
     localStorage.setItem('favorites', JSON.stringify(this.favorites.map(favorite => favorite.id)));
   }
 }

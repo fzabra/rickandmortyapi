@@ -33,6 +33,7 @@ export class FavoritesService {
 
   // Método de exemplo para verificar se um personagem está nos favoritos (substitua por sua lógica real)
   private isCharacterFavorite(id: number): boolean {
+    console.log("isCFav")
     // Lógica de verificação de favoritos
     // Por enquanto, vamos apenas retornar um valor aleatório (substitua por sua lógica real)
     return Math.random() < 0.5; // Simula 50% de chance de ser favorito
