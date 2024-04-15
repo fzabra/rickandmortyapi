@@ -10,13 +10,12 @@ import { FavoritesService } from '../services/favorites/favorites.service';
   providers: [FavoritesService]
 })
 export class FavoritesComponent {
+  favorites: { id: number, name: string }[] = [];
 
   constructor(private favoritesService: FavoritesService) { }
 
-  favorites: { id: number, name: string, species?: string }[] = [];
-
   ngOnInit(): void {
-    this.favorites = this.favoritesService.getFavorites();
+    this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
   }
 }
 

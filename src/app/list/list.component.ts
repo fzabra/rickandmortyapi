@@ -22,7 +22,6 @@ export class ListComponent implements OnInit {
   searchQueryControl = new FormControl('', Validators.minLength(3)) as FormControl<string>;
   searchQuery = '';
   filteredCharacters: TypeCharacter[] = [];
-  // favorites: number[] = [];
   favorites: { id: number, name: string }[] = [];
   constructor(
     private rickandmortyService: RickandmortyService,
@@ -52,8 +51,6 @@ export class ListComponent implements OnInit {
         console.log('Data:', data); 
         this.listCharacters = this.listCharacters.concat(data);
         this.filteredCharacters = this.listCharacters; 
-  
-        // Passa a lista de personagens disponíveis para o método getFavorites()
         this.favorites = this.favoritesService.getFavorites(data);
     
         if (res.info.next) {
@@ -89,18 +86,16 @@ export class ListComponent implements OnInit {
     }
   }
   
-  toggleFavorite(id: number) {
+  toggleFavorite(id: number, name: string) {
     const index = this.favorites.findIndex(favorite => favorite.id === id);
     if (index > -1) {
       this.favorites.splice(index, 1);
     } else {
-      this.getNameById(id).then(name => {
-        this.favorites.push({ id, name });
-      });
+      this.favorites.push({ id, name });
     }
     console.log('Favoritos atualizados:', this.favorites);
-    localStorage.setItem('favorites', JSON.stringify(this.favorites.map(favorite => favorite.id)));
-  }
+    localStorage.setItem('favorites', JSON.stringify(this.favorites));
+}
 }
 
 
