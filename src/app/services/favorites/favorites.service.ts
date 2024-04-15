@@ -7,8 +7,12 @@ export class FavoritesService {
 
   constructor() { }
 
-  getFavorites(): number[] {
+  getFavorites(): { id: number, name: string, species: string }[] {
     const favorites = localStorage.getItem('favorites');
-    return favorites ? JSON.parse(favorites) : [];
+    if (favorites) {
+      return JSON.parse(favorites).map((id: number) => ({ id, name: '', species: '' }));
+    } else {
+      return [];
+    }
   }
 }

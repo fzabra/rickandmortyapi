@@ -13,9 +13,10 @@ export class FavoritesComponent {
 
   constructor(private favoritesService: FavoritesService) { }
 
-  favorites: number[] = [];
+  favorites: { id: number, name: string, species: string }[] = [];
 
   ngOnInit(): void {
     this.favorites = this.favoritesService.getFavorites();
   }
 }
+
