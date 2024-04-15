@@ -21,6 +21,7 @@ export class ListComponent implements OnInit {
   searchQueryControl = new FormControl('', Validators.minLength(3)) as FormControl<string>;
   searchQuery = '';
   filteredCharacters: TypeCharacter[] = [];
+  favorites: number[] = [];
   constructor(
     private rickandmortyService: RickandmortyService,
     private route: Router
@@ -70,6 +71,16 @@ export class ListComponent implements OnInit {
       character.name.toLowerCase().includes(query)
     );
     console.log('Personagens filtrados:', this.filteredCharacters);
+  }
+
+  toggleFavorite(id: number) {
+    const index = this.favorites.indexOf(id);
+    if (index > -1) {
+      this.favorites.splice(index, 1);
+    } else {
+      this.favorites.push(id);
+    }
+    localStorage.setItem('favorites', JSON.stringify(this.favorites));
   }
   
 }

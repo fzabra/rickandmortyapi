@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FavoritesService } from '../services/favorites/favorites.service';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './favorites.component.html',
-  styleUrl: './favorites.component.less'
+  providers: [FavoritesService]
 })
 export class FavoritesComponent {
 
+  constructor(private favoritesService: FavoritesService) { }
+
+  favorites: number[] = [];
+
+  ngOnInit(): void {
+    this.favorites = this.favoritesService.getFavorites();
+  }
 }
