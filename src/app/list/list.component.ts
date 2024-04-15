@@ -9,6 +9,7 @@ import { TypeCharacter } from '../interfaces/character.interface'
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
+import { FavoritesService } from '../services/favorites/favorites.service'; 
 
 @Component({
   selector: 'app-list',
@@ -21,9 +22,11 @@ export class ListComponent implements OnInit {
   searchQueryControl = new FormControl('', Validators.minLength(3)) as FormControl<string>;
   searchQuery = '';
   filteredCharacters: TypeCharacter[] = [];
-  favorites: number[] = [];
+  // favorites: number[] = [];
+  favorites: { id: number, name: string }[] = [];
   constructor(
     private rickandmortyService: RickandmortyService,
+    private favoritesService: FavoritesService,
     private route: Router
   ) {}
 
@@ -50,6 +53,9 @@ export class ListComponent implements OnInit {
         this.listCharacters = this.listCharacters.concat(data);
         this.filteredCharacters = this.listCharacters; 
   
+        // Passa a lista de personagens disponíveis para o método getFavorites()
+        this.favorites = this.favoritesService.getFavorites(data);
+    
         if (res.info.next) {
           const nextPage = page + 1;
           this.getCharacters(nextPage);
@@ -74,15 +80,20 @@ export class ListComponent implements OnInit {
   }
 
   toggleFavorite(id: number) {
-    const index = this.favorites.indexOf(id);
+    const index = this.favorites.findIndex(favorite => favorite.id === id);
     if (index > -1) {
       this.favorites.splice(index, 1);
     } else {
-      this.favorites.push(id);
+      const name = this.getNameById(id);
+      this.favorites.push({ id, name });
     }
-    localStorage.setItem('favorites', JSON.stringify(this.favorites));
+    localStorage.setItem('favorites', JSON.stringify(this.favorites.map(favorite => favorite.id)));
   }
-  
+  private getNameById(id: number): string {
+    // Implemente a lógica para obter o nome do favorito com base no ID
+    // Por enquanto, vamos retornar uma string vazia
+    return '';
+  }
 }
 
 

@@ -1,3 +1,8 @@
-<div *ngFor="let favorite of favorites">
-    ID: {{ favorite.id }} - Nome: {{ favorite.name }}
+<div *ngIf="favorites.length > 0">
+  <div *ngFor="let favorite of favorites">
+    ID: {{ favorite.id }} - Nome: {{ favorite.name }} - Espécie: {{ favorite.species }}
   </div>
+</div>
+<div *ngIf="favorites.length === 0">
+  Não há favoritos.
+</div>
