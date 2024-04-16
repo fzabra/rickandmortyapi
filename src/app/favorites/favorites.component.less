@@ -1,0 +1,60 @@
+@import '../app.component.less';
+
+.listCardsFavorites{
+    padding: 40px;
+    div.list{
+        gap: 1.5rem;
+            display: grid;
+            grid-template-columns: auto auto auto;
+            max-width: 1020px;
+            margin-left: auto;
+            margin-right: auto;
+    }
+    
+    img{
+        width: 100%;
+        border-radius: 5px 5px 0 0;
+    }
+
+    .mat-mdc-card {
+        position: relative;
+        border-radius: 0 0 5px 5px;
+        margin-top: -20px;
+        height: 110px;
+        background-color: #000;
+        color: #fff;
+    }
+
+    mat-card-title{
+        .title-name();
+    }
+
+    mat-card-subtitle{
+        color: #fff;
+        font-size: 15px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+   
+    .listCardsFavorites{
+        padding: 40px;
+        margin-top: 80px;
+
+            div{
+                display: flex!important;
+                flex-direction: column;
+                gap: 20px;
+            }
+            mat-card-title{
+                height: 97px;
+            }
+        
+            .mat-mdc-card {
+                height: 160px;
+            }   
+        }
+    }
+
+
+

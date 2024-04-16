@@ -1,0 +1,17 @@
+<div class="listCardsFavorites">
+    <h3 class="title-page">INÍCIO</h3>
+    <div class="list" *ngIf="favorites.length > 0">
+        <div *ngFor="let favorite of favorites">
+            <img mat-card-image src="{{ favorite.image }}" alt="{{ favorite.name }}">
+            <mat-card class="card-rickandmorty">
+                <mat-card-header>
+                    <mat-card-title>{{ favorite.name }}</mat-card-title>
+                    <mat-card-subtitle>{{ favorite.species }}</mat-card-subtitle>
+                </mat-card-header>
+            </mat-card>
+        </div>
+    </div>
+    <div *ngIf="favorites.length === 0">
+        Não há favoritos.
+    </div>
+</div>
