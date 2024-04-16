@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatIconModule} from '@angular/material/icon';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatInputModule} from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
 import { RickandmortyService } from '../services/rickandmorty/rickandmorty.service';
 import { TypeCharacter } from '../interfaces/character.interface'
 import { Router } from '@angular/router';
@@ -34,7 +34,6 @@ export class ListComponent implements OnInit {
     this.searchQueryControl.valueChanges.pipe(
       debounceTime(300)
     ).subscribe((value) => {
-      console.log("Aqui o valor", value);
       this.searchCharacters();
     });
   }
@@ -43,12 +42,10 @@ export class ListComponent implements OnInit {
   listCharacters: TypeCharacter[] = [];
 
   getCharacters(page: number) {
-    console.log('Obtendo personagens da página', page);
     const res = this.rickandmortyService.getListCharacters(page);
     res.subscribe({
       next: (res) => {
         const data = res.results;
-        console.log('Data:', data); 
         this.listCharacters = this.listCharacters.concat(data);
         this.filteredCharacters = this.listCharacters; 
         this.favorites = this.favoritesService.getFavorites(data);
@@ -67,13 +64,10 @@ export class ListComponent implements OnInit {
   }
 
   searchCharacters() {
-    console.log('Buscando personagens...');
     const query = this.searchQueryControl.value.trim().toLowerCase();
-    console.log('Query:', query);
     this.filteredCharacters = this.listCharacters.filter(character =>
       character.name.toLowerCase().includes(query)
     );
-    console.log('Personagens filtrados:', this.filteredCharacters);
   }
 
   private async getNameById(id: number): Promise<string> {
@@ -93,7 +87,6 @@ export class ListComponent implements OnInit {
     } else {
         this.favorites.push({ id, name, image });
     }
-    console.log('Favoritos atualizados:', this.favorites);
     localStorage.setItem('favorites', JSON.stringify(this.favorites));
 }
 }

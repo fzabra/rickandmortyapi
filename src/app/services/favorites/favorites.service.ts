@@ -24,7 +24,6 @@ export class FavoritesService {
         }
       });
     }
-    console.log('Favoritos:', favorites); 
     return favorites;
   }
   

@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { ListComponent } from './list/list.component'
 
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatButtonModule} from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import {MatDrawerMode, MatSidenavModule} from '@angular/material/sidenav';
-import {MatIconModule} from '@angular/material/icon';
+import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
 import { BooleanInput } from '@angular/cdk/coercion';
-import {BreakpointObserver} from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-root',
