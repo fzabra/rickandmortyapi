@@ -6,6 +6,11 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 0 50px;
+
+
+    position: fixed;
+    width: 100%;
+    z-index: 50;
     img{
       max-width: 160px;
       min-height: 60px;
@@ -44,31 +49,51 @@
     display: none;
 }
 
+button.search {
+  margin-right: -50px;
+  .mat-icon{
+    color: #fff;
+  }
+}
+
+button.search{
+  display: none!important;
+}
+
 @media all and (max-width: 500px) {
-    .mat-drawer-container{
-      position: initial;
-    }
-    .burger {
-        color: white;
-        display: block;
-    }
+  button.search{
+      display: block!important;
+  }
+  .sidenav-content{
+    margin-top: 100px;
+    margin-left: 20px;
+  }
 
-    .toolBarButton {
+  .mat-drawer-container{
+    position: initial;
+  }
+
+  .burger {
+      color: white;
+      display: block;
+  }
+
+  .toolBarButton {
+      display: none;
+  }
+
+  .toolbar {
+      height:90px;
+      padding: 10px;
+      .deskMenu{
         display: none;
-    }
+      }
+  }
 
-    .toolbar {
-        height:90px;
-        padding: 10px;
-        .deskMenu{
-          display: none;
-        }
-    }
-
-    .container {
-        height: 95%;
-        padding: 0 10px;
-    }
+  .container {
+      height: 95%;
+      padding: 0 10px;
+  }
 }
 
 @media (min-width: 1900px){

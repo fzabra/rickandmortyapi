@@ -1,6 +1,12 @@
 <mat-toolbar class="toolbar">
     <a routerLink="/"><img src="../../assets/images/Rick_and_Morty.svg" alt="Rick and Morty"></a>
     <button 
+        (click)="onButtonClick()"
+        mat-icon-button
+        class="search">
+        <mat-icon>search</mat-icon>
+    </button>
+    <button 
         (click)="drawer.toggle()"
         mat-icon-button
         class="burger">

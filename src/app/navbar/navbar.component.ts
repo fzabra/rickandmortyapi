@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2  } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -30,7 +30,10 @@ export class NavbarComponent {
   readonly breakpoint$ = this.breakpointObserver
   .observe([ '(max-width: 500px)']);
 
-  constructor(private breakpointObserver: BreakpointObserver, private router: Router) {
+  constructor(
+    private breakpointObserver: BreakpointObserver, 
+    private renderer: Renderer2,
+    private router: Router) {
     this.breakpoint$.subscribe(() =>
       this.breakpointChanges()
     );
@@ -48,6 +51,16 @@ export class NavbarComponent {
       this.drawerMode = "push";
       this.mdcBackdrop = false;
     }
-    
+  }
+
+  onButtonClick() {
+    const parentSearchElement = document.getElementById('parent-search');
+    if (parentSearchElement) {
+      const currentMarginTop = window.getComputedStyle(parentSearchElement).marginTop;
+      const newMarginTop = currentMarginTop === '150px' ? '0px' : '150px';
+      this.renderer.setStyle(parentSearchElement, 'margin-top', newMarginTop);
+    } else {
+      console.error('Elemento com ID "parent-search" não encontrado.');
+    }
   }
 }

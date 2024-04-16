@@ -9,10 +9,11 @@ import { FavoritesService } from '../services/favorites/favorites.service';
   standalone: true,
   imports: [CommonModule,MatCardModule, MatButtonModule],
   templateUrl: './favorites.component.html',
+  styleUrl: './favorites.component.less',
   providers: [FavoritesService]
 })
 export class FavoritesComponent {
-  favorites: { id: number, name: string, image: string }[] = [];
+  favorites: { id: number, name: string, image: string, species?: string }[] = [];
 
   constructor(private favoritesService: FavoritesService) { }
 

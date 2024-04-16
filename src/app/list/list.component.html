@@ -1,24 +1,37 @@
-<mat-form-field>
-  <mat-label>Search</mat-label>
-  <input matInput type="text" [formControl]="searchQueryControl">
-</mat-form-field>
 
+
+<div id="parent-search" class="parent-search">
+    <mat-form-field class="form-field">
+        <mat-label>Search</mat-label>
+        <input matInput type="text" [formControl]="searchQueryControl">
+    </mat-form-field>
+</div>
+  
+<!-- <div *ngIf="loading" class="loading-indicator" style="font-size: 60px; color: #fff;">
+    Carregando...
+</div> -->
+  
 <div class="listCards">
-    @for (item of filteredCharacters; track item.id) {
+    <h3 class="title-page">INÍCIO</h3>
+    <ng-container *ngFor="let item of filteredCharacters; trackBy: trackByFn">
         <div>
         <!-- <div (click)="detailCharacter(item.id)"> -->
             <mat-card class="card-rickandmorty">
-                <img mat-card-image src="{{ item.image }}" alt="{{ item.name }}">
+                <img mat-card-image [src]="item.image" [alt]="item.name" loading="lazy">
                 <mat-card-header>
                 <mat-card-title>{{ item.name }}</mat-card-title>
                 <mat-card-subtitle>{{ item.species }}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-actions>
-                    <button mat-icon-button matTooltip="Favoritos" aria-label="Favoritos" (click)="toggleFavorite(item.id, item.name, item.image)">
-                        <mat-icon>favorite</mat-icon>
-                      </button>
+                <button mat-icon-button matTooltip="Favoritos" aria-label="Favoritos" 
+                    (click)="toggleFavorite(item.id, item.name, item.image, item.species)"
+                    [class.favorite-active]="isFavorite(item.id)">
+                    <mat-icon aria-hidden="false" aria-label="Favorite" [style.color]="isFavorite(item.id) ? 'black' : 'white'">
+                        {{ isFavorite(item.id) ? 'favorite' : 'favorite_border' }}
+                    </mat-icon>
+                </button>
                 </mat-card-actions>
             </mat-card>
         </div>
-    }
+    </ng-container>
 </div>
