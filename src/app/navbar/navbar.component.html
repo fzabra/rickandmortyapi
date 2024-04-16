@@ -1,0 +1,47 @@
+<mat-toolbar class="toolbar">
+    <a routerLink="/"><img src="../../assets/images/Rick_and_Morty.svg" alt="Rick and Morty"></a>
+    <button 
+        (click)="drawer.toggle()"
+        mat-icon-button
+        class="burger">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <div class="deskMenu">
+        <div class="toolBarButton">
+            <button 
+            mat-flat-button
+            class="biggerbutton"
+            routerLinkActive="mat-accent" 
+            routerLink="/">HOME</button>
+        </div>
+        <div  class="toolBarButton">
+            <button 
+            mat-flat-button
+            class="biggerbutton"
+            routerLinkActive="mat-accent"
+            routerLink="favorites" >FAVORITOS</button>    
+        </div>
+    </div>
+</mat-toolbar>
+<mat-drawer-container class="containear" [hasBackdrop]="mdcBackdrop">
+<mat-drawer #drawer class="drawer"  [mode]="drawerMode">
+    <div class="sidenav-content">
+        <div class="drawerButton" >
+        <button 
+        (click)="drawer.toggle()"
+        mat-flat-button  
+        routerLinkActive="mat-accent" 
+    
+        routerLink="/" class="biggerbutton">HOME</button>
+        </div>
+        <div  class="drawerButton">
+        <button 
+        (click)="drawer.toggle()"
+        mat-flat-button  
+        routerLinkActive="mat-accent" 
+    
+        routerLink="favorites" class="biggerbutton">FAVORITOS</button>    
+        </div>
+    </div>
+</mat-drawer>
+

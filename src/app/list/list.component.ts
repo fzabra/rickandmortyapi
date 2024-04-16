@@ -69,17 +69,7 @@ export class ListComponent implements OnInit {
       character.name.toLowerCase().includes(query)
     );
   }
-
-  private async getNameById(id: number): Promise<string> {
-    try {
-      const name = await this.rickandmortyService.getCharacterNameById(id).toPromise();
-      return name || '';
-    } catch (error) {
-      console.error('Erro ao obter o nome do personagem:', error);
-      return '';
-    }
-  }
-  
+    
   toggleFavorite(id: number, name: string, image: string) {
     const index = this.favorites.findIndex(favorite => favorite.id === id);
     if (index > -1) {
