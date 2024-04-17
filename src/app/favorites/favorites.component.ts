@@ -49,7 +49,6 @@ export class FavoritesComponent implements OnInit {
     const index = this.favorites.findIndex(favorite => favorite.id === id);
     if (index !== -1) {
       this.favorites.splice(index, 1);
-      // Atualiza os favoritos no localStorage após a remoção
       this.favoritesService.updateFavoritesInLocalStorage(this.favorites);
     }
   }
