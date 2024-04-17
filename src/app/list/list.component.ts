@@ -12,7 +12,7 @@ import { debounceTime } from 'rxjs/operators';
 import { FavoritesService } from '../services/favorites/favorites.service'; 
 import { CommonModule } from '@angular/common';
 import { Observable, forkJoin, of } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list',
@@ -22,13 +22,14 @@ import { switchMap, map } from 'rxjs/operators';
   styleUrl: './list.component.less'
 })
 export class ListComponent implements OnInit {
-  
   searchQueryControl = new FormControl('', Validators.minLength(3)) as FormControl<string>;
   searchQuery = '';
   filteredCharacters: TypeCharacter[] = [];
   favorites: { id: number, name: string, image: string, species?: string }[] = [];
   loading: boolean = false;
   favoritesCount: number = 0; 
+  page = 1;
+  listCharacters: TypeCharacter[] = [];
   trackByFn(index: number, item: any): any {
     return item.id;
   }
@@ -48,9 +49,6 @@ export class ListComponent implements OnInit {
     this.loadCharacters();
   }
 
-  page = 1;
-  listCharacters: TypeCharacter[] = [];
-
   getCharacters(page: number): Observable<any> {
     console.log(`Obtendo personagens da página ${page}`);
     return this.rickandmortyService.getListCharacters(page).pipe(
@@ -61,42 +59,36 @@ export class ListComponent implements OnInit {
             };
         })
     );
-}
+  }
 
-loadCharacters() {
-  this.loading = true;
-  let requests: Observable<any>[] = [];
-  let totalPages = 0;
-  this.getCharacters(1).subscribe((response: any) => {
-      totalPages = response.totalPages;
-      requests.push(of(response)); // Pushing the observable directly here
-      for (let page = 2; page <= totalPages; page++) {
-          requests.push(this.getCharacters(page));
-      }
-      forkJoin(requests).subscribe({
-          next: (responses: any[]) => {
-              responses.forEach((response: any, index: number) => {
-                  console.log(`Resposta recebida para a página ${index + 1}:`, response);
-                  const data = response.results;
-                  this.listCharacters = this.listCharacters.concat(data);
-                  this.filteredCharacters = this.listCharacters;
-                  this.favorites = this.favoritesService.getFavorites(data);
-              });
-              console.log("Todos os personagens carregados.");
-              this.loading = false;
-          },
-          error: (e) => {
-              console.log('Erro ao obter personagens:', e);
-              this.loading = false;
-          }
-      });
-  });
-}
-
-
-  
-  detailCharacter(id: number) {
-    this.route.navigate([`/rickandmorty/detail-character/${id}`]);
+  loadCharacters() {
+    this.loading = true;
+    let requests: Observable<any>[] = [];
+    let totalPages = 0;
+    this.getCharacters(1).subscribe((response: any) => {
+        totalPages = response.totalPages;
+        requests.push(of(response)); // Pushing the observable directly here
+        for (let page = 2; page <= totalPages; page++) {
+            requests.push(this.getCharacters(page));
+        }
+        forkJoin(requests).subscribe({
+            next: (responses: any[]) => {
+                responses.forEach((response: any, index: number) => {
+                    console.log(`Resposta recebida para a página ${index + 1}:`, response);
+                    const data = response.results;
+                    this.listCharacters = this.listCharacters.concat(data);
+                    this.filteredCharacters = this.listCharacters;
+                    this.favorites = this.favoritesService.getFavorites(data);
+                });
+                console.log("Todos os personagens carregados.");
+                this.loading = false;
+            },
+            error: (e) => {
+                console.log('Erro ao obter personagens:', e);
+                this.loading = false;
+            }
+        });
+    });
   }
 
   searchCharacters() {
@@ -137,4 +129,5 @@ loadCharacters() {
       this.favoritesCount = 0;
     }
   }
+
 }

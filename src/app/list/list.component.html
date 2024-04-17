@@ -6,16 +6,11 @@
         <input matInput type="text" [formControl]="searchQueryControl">
     </mat-form-field>
 </div>
-  
-<!-- <div *ngIf="loading" class="loading-indicator" style="font-size: 60px; color: #fff;">
-    Carregando...
-</div> -->
-  
+
 <div class="listCards">
     <h3 class="title-page">INÍCIO</h3>
     <ng-container *ngFor="let item of filteredCharacters; trackBy: trackByFn">
         <div>
-        <!-- <div (click)="detailCharacter(item.id)"> -->
             <mat-card class="card-rickandmorty">
                 <img mat-card-image [src]="item.image" [alt]="item.name" loading="eager">
                 <mat-card-header>
