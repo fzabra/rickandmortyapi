@@ -17,7 +17,7 @@
         <div>
         <!-- <div (click)="detailCharacter(item.id)"> -->
             <mat-card class="card-rickandmorty">
-                <img mat-card-image [src]="item.image" [alt]="item.name" loading="lazy">
+                <img mat-card-image [src]="item.image" [alt]="item.name" loading="eager">
                 <mat-card-header>
                 <mat-card-title>{{ item.name }}</mat-card-title>
                 <mat-card-subtitle>{{ item.species }}</mat-card-subtitle>
