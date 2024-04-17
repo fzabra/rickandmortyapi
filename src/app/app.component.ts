@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ListComponent } from './list/list.component';
+import { FooterComponent } from './footer/footer.component';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,8 @@ import { ListComponent } from './list/list.component';
   imports: [
     RouterOutlet, 
     NavbarComponent,
-    ListComponent],
+    ListComponent,
+    FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.less'
 })

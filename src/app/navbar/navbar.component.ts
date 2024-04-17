@@ -24,6 +24,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 })
 export class NavbarComponent {
   pathName = '';
+  favoritesCount: number = 0;
   mdcBackdrop: BooleanInput = false;
   drawerMode: MatDrawerMode = "push";
 
@@ -39,6 +40,7 @@ export class NavbarComponent {
     );
     this.router.events.subscribe(() => {
       this.pathName = this.router.url;
+      this.updateFavoritesCount();
     });
   }
 
@@ -50,6 +52,16 @@ export class NavbarComponent {
     } else {
       this.drawerMode = "push";
       this.mdcBackdrop = false;
+    }
+  }
+
+  updateFavoritesCount(): void {
+    const favoritesData = localStorage.getItem('favorites');
+    if (favoritesData) {
+      const favorites = JSON.parse(favoritesData);
+      this.favoritesCount = favorites.length;
+    } else {
+      this.favoritesCount = 0;
     }
   }
 

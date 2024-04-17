@@ -12,6 +12,12 @@
         </div>
     </div>
     <div *ngIf="favorites.length === 0">
-        Não há favoritos.
+        <div class="box-empty">
+            <h2>Parece que você ainda não tem favoritos</h2>
+            <p>Volte à página inicial e escolha os melhores para você.</p>
+            <p>
+                <button mat-flat-button [routerLink]="'/'">Voltar ao início</button>
+            </p>
+        </div>
     </div>
 </div>
