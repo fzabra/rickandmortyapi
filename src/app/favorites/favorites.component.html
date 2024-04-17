@@ -1,5 +1,7 @@
 <div class="listCardsFavorites">
-    <h3 class="title-page">INÍCIO</h3>
+    <div class="title-page-row">
+        <h3 class="title-page">Favoritos</h3>
+    </div>
     <div class="list" *ngIf="favorites.length > 0">
         <div *ngFor="let favorite of favorites">
             <img mat-card-image src="{{ favorite.image }}" alt="{{ favorite.name }}">
