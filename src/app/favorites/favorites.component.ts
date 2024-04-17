@@ -5,14 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { FavoritesService } from '../services/favorites/favorites.service';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  MatDialog,
-  MatDialogRef,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogTitle,
-  MatDialogContent,
-} from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-favorites',
@@ -26,16 +19,7 @@ export class FavoritesComponent implements OnInit {
   favorites: { id: number, name: string, image: string, species?: string }[] = [];
 
   constructor(
-    private favoritesService: FavoritesService,
-    public dialog: MatDialog) { }
-
-    openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-      this.dialog.open(DialogAnimationsExampleDialog, {
-        width: '250px',
-        enterAnimationDuration,
-        exitAnimationDuration,
-      });
-    }
+    private favoritesService: FavoritesService) { }
 
   ngOnInit(): void {
     if (typeof localStorage !== 'undefined') {
@@ -52,14 +36,4 @@ export class FavoritesComponent implements OnInit {
       this.favoritesService.updateFavoritesInLocalStorage(this.favorites);
     }
   }
-}
-
-@Component({
-  selector: 'dialog-animations-example-dialog',
-  templateUrl: 'dialog-animations-example-dialog.html',
-  standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
-})
-export class DialogAnimationsExampleDialog {
-  constructor(public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>) {}
 }
