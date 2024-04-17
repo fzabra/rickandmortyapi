@@ -4,6 +4,9 @@
     </div>
     <div class="list" *ngIf="favorites.length > 0">
         <div *ngFor="let favorite of favorites">
+            <button mat-icon-button matTooltip="Trash" aria-label="Trash" class="trashicon" (click)="removeFavorite(favorite.id)">
+                <mat-icon aria-hidden="false" aria-label="Trash">delete</mat-icon>
+            </button>
             <img mat-card-image src="{{ favorite.image }}" alt="{{ favorite.name }}">
             <mat-card class="card-rickandmorty">
                 <mat-card-header>
@@ -11,9 +14,6 @@
                     <mat-card-subtitle>{{ favorite.species }}</mat-card-subtitle>
                 </mat-card-header>
             </mat-card>
-            <button mat-icon-button matTooltip="Trash" aria-label="Trash" (click)="removeFavorite(favorite.id)">
-                <mat-icon aria-hidden="false" aria-label="Trash">delete</mat-icon>
-            </button>
         </div>
     </div>
     <div *ngIf="favorites.length === 0">
