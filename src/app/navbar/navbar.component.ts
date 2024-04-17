@@ -34,14 +34,19 @@ export class NavbarComponent {
   constructor(
     private breakpointObserver: BreakpointObserver, 
     private renderer: Renderer2,
-    private router: Router) {
-    this.breakpoint$.subscribe(() =>
-      this.breakpointChanges()
-    );
-    this.router.events.subscribe(() => {
-      this.pathName = this.router.url;
-      this.updateFavoritesCount();
-    });
+    private router: Router
+  ) {
+    if (typeof localStorage !== 'undefined') {
+      this.breakpoint$.subscribe(() =>
+        this.breakpointChanges()
+      );
+      this.router.events.subscribe(() => {
+        this.pathName = this.router.url;
+        this.updateFavoritesCount();
+      });
+    } else {
+      console.warn('localStorage is not available. Some features may not work as expected.');
+    }
   }
 
   breakpointChanges(): void {
@@ -56,12 +61,16 @@ export class NavbarComponent {
   }
 
   updateFavoritesCount(): void {
-    const favoritesData = localStorage.getItem('favorites');
-    if (favoritesData) {
-      const favorites = JSON.parse(favoritesData);
-      this.favoritesCount = favorites.length;
+    if (typeof localStorage !== 'undefined') {
+      const favoritesData = localStorage.getItem('favorites');
+      if (favoritesData) {
+        const favorites = JSON.parse(favoritesData);
+        this.favoritesCount = favorites.length;
+      } else {
+        this.favoritesCount = 0;
+      }
     } else {
-      this.favoritesCount = 0;
+      console.warn('localStorage is not available. Favorites count cannot be updated.');
     }
   }
 

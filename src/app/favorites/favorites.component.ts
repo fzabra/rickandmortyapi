@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -13,13 +13,16 @@ import { RouterLink } from '@angular/router';
   styleUrl: './favorites.component.less',
   providers: [FavoritesService]
 })
-export class FavoritesComponent {
+export class FavoritesComponent implements OnInit {
   favorites: { id: number, name: string, image: string, species?: string }[] = [];
 
   constructor(private favoritesService: FavoritesService) { }
 
   ngOnInit(): void {
-    this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    if (typeof localStorage !== 'undefined') {
+      this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    } else {
+      console.error('localStorage is not available.');
+    }
   }
 }
-
