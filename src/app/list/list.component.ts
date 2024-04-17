@@ -109,15 +109,11 @@ export class ListComponent implements OnInit {
   }
 
   updateFavoritesCount(): void {
-    // Recupera os favoritos do localStorage
     const storedFavorites = localStorage.getItem('favorites');
     if (storedFavorites) {
-      // Converte a string JSON de favoritos em um array de objetos
       const favorites = JSON.parse(storedFavorites);
-      // Atualiza a contagem de favoritos
       this.favoritesCount = favorites.length;
     } else {
-      // Se não houver favoritos, a contagem é zero
       this.favoritesCount = 0;
     }
   }

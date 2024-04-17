@@ -27,6 +27,10 @@ export class FavoritesService {
     return favorites;
   }
   
+  updateFavoritesInLocalStorage(favorites: { id: number, name: string, image: string, species?: string }[]): void {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }
+
   private isCharacterFavorite(id: number): boolean {
     return false;
   }

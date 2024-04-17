@@ -4,11 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FavoritesService } from '../services/favorites/favorites.service';
 import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, RouterLink],
+  imports: [CommonModule, MatCardModule, MatButtonModule, RouterLink, MatIconModule],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.less',
   providers: [FavoritesService]
@@ -23,6 +24,15 @@ export class FavoritesComponent implements OnInit {
       this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
     } else {
       console.error('localStorage is not available.');
+    }
+  }
+
+  removeFavorite(id: number): void {
+    const index = this.favorites.findIndex(favorite => favorite.id === id);
+    if (index !== -1) {
+      this.favorites.splice(index, 1);
+      // Atualiza os favoritos no localStorage após a remoção
+      this.favoritesService.updateFavoritesInLocalStorage(this.favorites);
     }
   }
 }
