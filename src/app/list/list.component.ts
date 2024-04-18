@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,7 +35,8 @@ export class ListComponent implements OnInit {
   constructor(
     private rickandmortyService: RickandmortyService,
     private favoritesService: FavoritesService,
-    private route: Router
+    private route: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +50,7 @@ export class ListComponent implements OnInit {
   }
 
   getCharacters(page: number): Observable<any> {
-    console.log(`Obtendo personagens da página ${page}`);
+    // console.log(`Obtendo personagens da página ${page}`);
     return this.rickandmortyService.getListCharacters(page).pipe(
         map((response: any) => {
             return {
@@ -73,13 +74,13 @@ export class ListComponent implements OnInit {
         forkJoin(requests).subscribe({
             next: (responses: any[]) => {
                 responses.forEach((response: any, index: number) => {
-                    console.log(`Resposta recebida para a página ${index + 1}:`, response);
+                    // console.log(`Resposta recebida para a página ${index + 1}:`, response);
                     const data = response.results;
                     this.listCharacters = this.listCharacters.concat(data);
                     this.filteredCharacters = this.listCharacters;
                     this.favorites = this.favoritesService.getFavorites(data);
                 });
-                console.log("Todos os personagens carregados.");
+                // console.log("Todos os personagens carregados.");
                 setTimeout(() => {
                     this.loading = false;
                 }, 6000); 
@@ -90,7 +91,7 @@ export class ListComponent implements OnInit {
             }
         });
     });
-    console.log(this.loading);
+    // console.log(this.loading);
   }
 
   searchCharacters() {
@@ -108,6 +109,7 @@ export class ListComponent implements OnInit {
         this.favorites.push({ id, name, image, species });
     }
     localStorage.setItem('favorites', JSON.stringify(this.favorites));
+    window.dispatchEvent(new Event('favoritesChanged'));
   }
 
   isFavorite(itemId: number): boolean {

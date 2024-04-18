@@ -35,5 +35,6 @@ export class FavoritesComponent implements OnInit {
       this.favorites.splice(index, 1);
       this.favoritesService.updateFavoritesInLocalStorage(this.favorites);
     }
+    window.dispatchEvent(new Event('favoritesChanged'));
   }
 }
