@@ -28,6 +28,32 @@
     background-color:@color-black!important;
     color: @color-white!important;
     font-family: ConcertOne;
+    &.favorite{
+      &::before{
+        font-family: 'fontawesome';
+        content: '\f004';
+        margin-top: 10px;
+        margin-right: 4px;
+        position: absolute;
+        left: -10px;
+        z-index: 5;
+      }
+    }
+    &.home{
+      &::before{
+        font-family: 'fontawesome';
+        content: '\f015';
+        margin-top: 10px;
+        margin-right: 4px;
+        position: absolute;
+        left: 0;
+        z-index: 5;
+      }
+    }
+
+    &:hover{
+      background-color: #000 !important;
+    }
 }
 
 .toolBarButton, .drawerButton {

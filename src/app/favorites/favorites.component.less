@@ -6,7 +6,7 @@
 }
 .trashicon{
     position: absolute;
-    z-index: 20;
+    z-index: 2;
 }
 
 .listCardsFavorites{
@@ -73,21 +73,29 @@
         padding: 40px;
         margin-top: 80px;
 
-            div{
-                display: flex!important;
-                flex-direction: column;
-                gap: 20px;
+        .ng-star-inserted{
+            display: flex!important;
+            flex-direction: column;
+            gap: 20px;
+            .box-empty{
+                padding: 30px;
+                text-align: center;
             }
-            mat-card-title{
-                height: 97px;
-                font-size: 25px;
-            }
-        
-            .mat-mdc-card {
-                height: 160px;
-            }   
         }
+        mat-card-title{
+            height: 97px;
+            font-size: 25px;
+        }
+    
+        .mat-mdc-card {
+            height: 160px;
+        }   
     }
+    .title-page-row{
+        max-width: 1024px;
+        margin: 0 auto 24px auto;
+    }
+}
 
 
 
