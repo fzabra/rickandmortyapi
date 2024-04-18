@@ -60,14 +60,14 @@ export class ListComponent implements OnInit {
         })
     );
   }
-
+  
   loadCharacters() {
     this.loading = true;
     let requests: Observable<any>[] = [];
     let totalPages = 0;
     this.getCharacters(1).subscribe((response: any) => {
         totalPages = response.totalPages;
-        requests.push(of(response)); // Pushing the observable directly here
+        requests.push(of(response));
         for (let page = 2; page <= totalPages; page++) {
             requests.push(this.getCharacters(page));
         }
@@ -81,7 +81,9 @@ export class ListComponent implements OnInit {
                     this.favorites = this.favoritesService.getFavorites(data);
                 });
                 console.log("Todos os personagens carregados.");
-                this.loading = false;
+                setTimeout(() => {
+                    this.loading = false;
+                }, 6000); 
             },
             error: (e) => {
                 console.log('Erro ao obter personagens:', e);
@@ -89,6 +91,7 @@ export class ListComponent implements OnInit {
             }
         });
     });
+    console.log(this.loading);
   }
 
   searchCharacters() {
