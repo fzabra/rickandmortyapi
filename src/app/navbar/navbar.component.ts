@@ -51,9 +51,11 @@ export class NavbarComponent {
   }
 
   ngOnInit() {
-    window.addEventListener('favoritesChanged', () => {
-      this.updateFavoritesCount();
-    });
+    if (typeof window !== 'undefined') {
+      window.addEventListener('favoritesChanged', () => {
+        this.updateFavoritesCount();
+      });
+    }
   }
 
   breakpointChanges(): void {
