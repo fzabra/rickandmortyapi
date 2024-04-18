@@ -4,4 +4,29 @@ body{
     background-color: #1F1F1F;
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+body { margin: 0; font-family: Poppins-Regular, "Helvetica Neue", sans-serif; }
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: #1F1F1F!important;
+    border-radius: 12px;
+    border: solid 1px #5D5D5D;
+    .mdc-floating-label.mat-mdc-floating-label{
+        color: #5D5D5D;
+        font-family: Poppins-Regular, "Helvetica Neue", sans-serif!important;
+    }
+}
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
+    color: #F2F2F2!important;
+    font-family: Poppins-Regular, "Helvetica Neue", sans-serif!important;
+}
+.mat-mdc-form-field:not(.mat-form-field-disabled) .mat-mdc-floating-label.mdc-floating-label{
+    font-family: Poppins-Regular, "Helvetica Neue", sans-serif!important;
+    
+    color: #5D5D5D!important;
+    font-size: 16px!important;
+}
+.mat-mdc-form-field:not(.mat-form-field-no-animations) .mdc-line-ripple::after ,
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+display: none;
+}
