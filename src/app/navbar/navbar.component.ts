@@ -1,4 +1,4 @@
-import { Component, Renderer2  } from '@angular/core';
+import { Component, Renderer2, ChangeDetectorRef  } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -34,7 +34,8 @@ export class NavbarComponent {
   constructor(
     private breakpointObserver: BreakpointObserver, 
     private renderer: Renderer2,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     if (typeof localStorage !== 'undefined') {
       this.breakpoint$.subscribe(() =>
@@ -47,6 +48,12 @@ export class NavbarComponent {
     } else {
       console.warn('localStorage is not available. Some features may not work as expected.');
     }
+  }
+
+  ngOnInit() {
+    window.addEventListener('favoritesChanged', () => {
+      this.updateFavoritesCount();
+    });
   }
 
   breakpointChanges(): void {
