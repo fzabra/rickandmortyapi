@@ -27,7 +27,6 @@ export class ListComponent implements OnInit {
   filteredCharacters: TypeCharacter[] = [];
   favorites: { id: number, name: string, image: string, species?: string }[] = [];
   loading: boolean = false;
-  favoritesCount: number = 0; 
   page = 1;
   listCharacters: TypeCharacter[] = [];
   trackByFn(index: number, item: any): any {
@@ -109,7 +108,6 @@ export class ListComponent implements OnInit {
         this.favorites.push({ id, name, image, species });
     }
     localStorage.setItem('favorites', JSON.stringify(this.favorites));
-    this.updateFavoritesCount();
   }
 
   isFavorite(itemId: number): boolean {
@@ -122,15 +120,4 @@ export class ListComponent implements OnInit {
     }
     return false;
   }
-
-  updateFavoritesCount(): void {
-    const storedFavorites = localStorage.getItem('favorites');
-    if (storedFavorites) {
-      const favorites = JSON.parse(storedFavorites);
-      this.favoritesCount = favorites.length;
-    } else {
-      this.favoritesCount = 0;
-    }
-  }
-
 }
