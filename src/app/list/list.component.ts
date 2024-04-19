@@ -50,7 +50,7 @@ export class ListComponent implements OnInit {
   }
 
   getCharacters(page: number): Observable<any> {
-    // console.log(`Obtendo personagens da página ${page}`);
+    console.log(`Obtendo personagens da página ${page}`);
     return this.rickandmortyService.getListCharacters(page).pipe(
         map((response: any) => {
             return {
@@ -62,38 +62,39 @@ export class ListComponent implements OnInit {
   }
   
   loadCharacters() {
-    this.loading = true;
-    let requests: Observable<any>[] = [];
     let totalPages = 0;
-    this.getCharacters(1).subscribe((response: any) => {
-        totalPages = response.totalPages;
-        requests.push(of(response));
-        for (let page = 2; page <= totalPages; page++) {
-            requests.push(this.getCharacters(page));
-        }
-        forkJoin(requests).subscribe({
-            next: (responses: any[]) => {
-                responses.forEach((response: any, index: number) => {
-                    // console.log(`Resposta recebida para a página ${index + 1}:`, response);
-                    const data = response.results;
-                    this.listCharacters = this.listCharacters.concat(data);
-                    this.filteredCharacters = this.listCharacters;
-                    this.favorites = this.favoritesService.getFavorites(data);
-                });
-                // console.log("Todos os personagens carregados.");
-                setTimeout(() => {
-                    this.loading = false;
-                }, 6000); 
-            },
-            error: (e) => {
-                console.log('Erro ao obter personagens:', e);
-                this.loading = false;
-            }
-        });
+    let currentPage = 1;
+    this.loading = true;
+    this.getCharacters(currentPage).subscribe((response: any) => {
+      totalPages = response.totalPages;
+      console.log({totalPages});
+      this.listCharacters = response.results;
+      console.log("listCharacters", this.listCharacters);
+      this.filteredCharacters = this.listCharacters;
+      console.log("filteredCharacters", this.filteredCharacters);
+      this.favorites = this.favoritesService.getFavorites(this.listCharacters);
+      this.loading = false;
+      currentPage++;
     });
-    // console.log(this.loading);
+  
+    window.addEventListener('scroll', () => {
+      console.log(" window.addEventListener",  window.addEventListener);
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        if (currentPage <= totalPages) {
+          console.log("chegou no fim")
+          this.loading = true;
+          this.getCharacters(currentPage).subscribe((response: any) => {
+            this.listCharacters = this.listCharacters.concat(response.results);
+            this.filteredCharacters = this.listCharacters;
+            this.favorites = this.favoritesService.getFavorites(this.listCharacters);
+            this.loading = false;
+            currentPage++;
+          });
+        }
+      }
+    });
   }
-
+  
   searchCharacters() {
     const query = this.searchQueryControl.value.trim().toLowerCase();
     this.filteredCharacters = this.listCharacters.filter(character =>
