@@ -4,7 +4,7 @@
     </div>
     <div class="list" *ngIf="favorites.length > 0">
         <div *ngFor="let favorite of favorites">
-            <button mat-icon-button matTooltip="Trash" aria-label="Trash" class="trashicon" (click)="removeFavorite(favorite.id);">
+            <button mat-icon-button matTooltip="Trash" aria-label="Trash" class="trashicon" (click)="openDialog('0ms', '0ms', favorite.id, favorite.name)">
                 <mat-icon aria-hidden="false" aria-label="Trash">delete</mat-icon>
             </button>
             <img mat-card-image src="{{ favorite.image }}" alt="{{ favorite.name }}">
