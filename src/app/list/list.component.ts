@@ -50,7 +50,6 @@ export class ListComponent implements OnInit {
   }
 
   getCharacters(page: number): Observable<any> {
-    console.log(`Obtendo personagens da página ${page}`);
     return this.rickandmortyService.getListCharacters(page).pipe(
         map((response: any) => {
             return {
@@ -67,21 +66,16 @@ export class ListComponent implements OnInit {
     this.loading = true;
     this.getCharacters(currentPage).subscribe((response: any) => {
       totalPages = response.totalPages;
-      console.log({totalPages});
       this.listCharacters = response.results;
-      console.log("listCharacters", this.listCharacters);
       this.filteredCharacters = this.listCharacters;
-      console.log("filteredCharacters", this.filteredCharacters);
       this.favorites = this.favoritesService.getFavorites(this.listCharacters);
       this.loading = false;
       currentPage++;
     });
   
     window.addEventListener('scroll', () => {
-      console.log(" window.addEventListener",  window.addEventListener);
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
         if (currentPage <= totalPages) {
-          console.log("chegou no fim")
           this.loading = true;
           this.getCharacters(currentPage).subscribe((response: any) => {
             this.listCharacters = this.listCharacters.concat(response.results);
