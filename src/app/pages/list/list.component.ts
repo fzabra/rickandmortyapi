@@ -4,12 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
-import { RickandmortyService } from '../services/rickandmorty/rickandmorty.service';
-import { TypeCharacter } from '../interfaces/character.interface'
+import { RickandmortyService } from '../../services/rickandmorty/rickandmorty.service';
+import { TypeCharacter } from '../../interfaces/character.interface'
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
-import { FavoritesService } from '../services/favorites/favorites.service'; 
+import { FavoritesService } from '../../services/favorites/favorites.service'; 
 import { CommonModule } from '@angular/common';
 import { Observable, forkJoin, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -73,20 +73,22 @@ export class ListComponent implements OnInit {
       currentPage++;
     });
   
-    window.addEventListener('scroll', () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        if (currentPage <= totalPages) {
-          this.loading = true;
-          this.getCharacters(currentPage).subscribe((response: any) => {
-            this.listCharacters = this.listCharacters.concat(response.results);
-            this.filteredCharacters = this.listCharacters;
-            this.favorites = this.favoritesService.getFavorites(this.listCharacters);
-            this.loading = false;
-            currentPage++;
-          });
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+          if (currentPage <= totalPages) {
+            this.loading = true;
+            this.getCharacters(currentPage).subscribe((response: any) => {
+              this.listCharacters = this.listCharacters.concat(response.results);
+              this.filteredCharacters = this.listCharacters;
+              this.favorites = this.favoritesService.getFavorites(this.listCharacters);
+              this.loading = false;
+              currentPage++;
+            });
+          }
         }
-      }
-    });
+      });
+    }
   }
   
   searchCharacters() {
@@ -118,3 +120,5 @@ export class ListComponent implements OnInit {
     return false;
   }
 }
+
+
