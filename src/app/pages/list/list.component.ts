@@ -64,32 +64,38 @@ export class ListComponent implements OnInit {
     let totalPages = 0;
     let currentPage = 1;
     this.loading = true;
-    this.getCharacters(currentPage).subscribe((response: any) => {
-      totalPages = response.totalPages;
-      this.listCharacters = response.results;
-      this.filteredCharacters = this.listCharacters;
-      this.favorites = this.favoritesService.getFavorites(this.listCharacters);
-      this.loading = false;
-      currentPage++;
-    });
   
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', () => {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-          if (currentPage <= totalPages) {
-            this.loading = true;
-            this.getCharacters(currentPage).subscribe((response: any) => {
-              this.listCharacters = this.listCharacters.concat(response.results);
-              this.filteredCharacters = this.listCharacters;
-              this.favorites = this.favoritesService.getFavorites(this.listCharacters);
-              this.loading = false;
-              currentPage++;
-            });
-          }
+    const loadPage = () => {
+      this.getCharacters(currentPage).subscribe((response: any) => {
+        this.listCharacters = this.listCharacters.concat(response.results);
+        this.filteredCharacters = this.listCharacters;
+        this.favorites = this.favoritesService.getFavorites(this.listCharacters);
+        currentPage++;
+  
+        if (currentPage <= totalPages) {
+          loadPage();
+        } else {
+          this.loading = false;
         }
       });
-    }
+    };
+  
+    setTimeout(() => {
+      this.getCharacters(currentPage).subscribe((response: any) => {
+        totalPages = response.totalPages;
+        this.listCharacters = response.results;
+        this.filteredCharacters = this.listCharacters;
+        this.favorites = this.favoritesService.getFavorites(this.listCharacters);
+        currentPage++;
+        if (currentPage <= totalPages) {
+          loadPage();
+        } else {
+          this.loading = false;
+        }
+      });
+    }, 1000);
   }
+  
   
   searchCharacters() {
     const query = this.searchQueryControl.value.trim().toLowerCase();
