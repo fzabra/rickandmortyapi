@@ -1,4 +1,3 @@
-
 <div *ngIf="loading" class="loading-indicator">
     <img src="../../assets/images/rickandmorty.gif" alt="Rick and Morty">
 </div>
@@ -10,26 +9,33 @@
     </mat-form-field>
 </div>
 
-<div class="listCards">
-    <h3 class="title-page">INÍCIO</h3>
-    <ng-container *ngFor="let item of filteredCharacters; trackBy: trackByFn">
-        <div>
+<ng-container *ngIf="filteredCharacters.length > 0; else noResults">
+    <div class="listCards">
+        <h3 class="title-page">INÍCIO</h3>
+        <div *ngFor="let item of filteredCharacters; trackBy: trackByFn">
             <mat-card class="card-rickandmorty">
                 <img mat-card-image [src]="item.image" [alt]="item.name" loading="eager">
                 <mat-card-header>
-                <mat-card-title>{{ item.name }}</mat-card-title>
-                <mat-card-subtitle>{{ item.species }}</mat-card-subtitle>
+                    <mat-card-title>{{ item.name }}</mat-card-title>
+                    <mat-card-subtitle>{{ item.species }}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-actions>
-                <button mat-icon-button matTooltip="Favoritos" aria-label="Favoritos" 
-                    (click)="toggleFavorite(item.id, item.name, item.image, item.species)"
-                    [class.favorite-active]="isFavorite(item.id)">
-                    <mat-icon aria-hidden="false" aria-label="Favorite" [style.color]="isFavorite(item.id) ? 'black' : 'white'">
-                        {{ isFavorite(item.id) ? 'favorite' : 'favorite_border' }}
-                    </mat-icon>
-                </button>
+                    <button mat-icon-button matTooltip="Favoritos" aria-label="Favoritos" 
+                        (click)="toggleFavorite(item.id, item.name, item.image, item.species)"
+                        [class.favorite-active]="isFavorite(item.id)">
+                        <mat-icon aria-hidden="false" aria-label="Favorite" [style.color]="isFavorite(item.id) ? 'black' : 'white'">
+                            {{ isFavorite(item.id) ? 'favorite' : 'favorite_border' }}
+                        </mat-icon>
+                    </button>
                 </mat-card-actions>
             </mat-card>
         </div>
-    </ng-container>
-</div>
+    </div>
+</ng-container>
+
+<ng-template #noResults>
+    <div class="box-empty">
+        <h2>Nada foi encontrado</h2>
+        <p>Tente uma nova busca</p>
+    </div>
+</ng-template>
