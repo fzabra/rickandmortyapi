@@ -11,13 +11,14 @@ import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { FavoritesService } from '../../services/favorites/favorites.service'; 
 import { CommonModule } from '@angular/common';
-import { Observable, forkJoin, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LoadingComponent } from '../../components/loading/loading.component'
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [MatInputModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule, ReactiveFormsModule, CommonModule],
+  imports: [MatInputModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule, ReactiveFormsModule, CommonModule, LoadingComponent],
   templateUrl: './list.component.html',
   styleUrl: './list.component.less'
 })
@@ -64,32 +65,38 @@ export class ListComponent implements OnInit {
     let totalPages = 0;
     let currentPage = 1;
     this.loading = true;
-    this.getCharacters(currentPage).subscribe((response: any) => {
-      totalPages = response.totalPages;
-      this.listCharacters = response.results;
-      this.filteredCharacters = this.listCharacters;
-      this.favorites = this.favoritesService.getFavorites(this.listCharacters);
-      this.loading = false;
-      currentPage++;
-    });
   
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', () => {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-          if (currentPage <= totalPages) {
-            this.loading = true;
-            this.getCharacters(currentPage).subscribe((response: any) => {
-              this.listCharacters = this.listCharacters.concat(response.results);
-              this.filteredCharacters = this.listCharacters;
-              this.favorites = this.favoritesService.getFavorites(this.listCharacters);
-              this.loading = false;
-              currentPage++;
-            });
-          }
+    const loadPage = () => {
+      this.getCharacters(currentPage).subscribe((response: any) => {
+        this.listCharacters = this.listCharacters.concat(response.results);
+        this.filteredCharacters = this.listCharacters;
+        this.favorites = this.favoritesService.getFavorites(this.listCharacters);
+        currentPage++;
+  
+        if (currentPage <= totalPages) {
+          loadPage();
+        } else {
+          this.loading = false;
         }
       });
-    }
+    };
+  
+    setTimeout(() => {
+      this.getCharacters(currentPage).subscribe((response: any) => {
+        totalPages = response.totalPages;
+        this.listCharacters = response.results;
+        this.filteredCharacters = this.listCharacters;
+        this.favorites = this.favoritesService.getFavorites(this.listCharacters);
+        currentPage++;
+        if (currentPage <= totalPages) {
+          loadPage();
+        } else {
+          this.loading = false;
+        }
+      });
+    }, 1000);
   }
+  
   
   searchCharacters() {
     const query = this.searchQueryControl.value.trim().toLowerCase();
