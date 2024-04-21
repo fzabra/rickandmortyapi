@@ -11,13 +11,14 @@ import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { FavoritesService } from '../../services/favorites/favorites.service'; 
 import { CommonModule } from '@angular/common';
-import { Observable, forkJoin, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LoadingComponent } from '../../components/loading/loading.component'
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [MatInputModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule, ReactiveFormsModule, CommonModule],
+  imports: [MatInputModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule, ReactiveFormsModule, CommonModule, LoadingComponent],
   templateUrl: './list.component.html',
   styleUrl: './list.component.less'
 })
