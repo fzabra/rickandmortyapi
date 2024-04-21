@@ -10,14 +10,15 @@
 }
 
 .listCardsFavorites{
+    background-color: #1F1F1F;
     padding: 40px;
     div.list{
         gap: 1.5rem;
-            display: grid;
-            grid-template-columns: 33% 33% 33%;
-            max-width: 1020px;
-            margin-left: auto;
-            margin-right: auto;
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+        max-width: 1020px;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     img{
@@ -68,12 +69,17 @@
     }
 }
 @media only screen and (max-width: 600px) {
+
+    .box-empty{
+        text-align: center;
+        padding: 10px;
+    }
    
     .listCardsFavorites{
         padding: 40px;
         margin-top: 80px;
 
-        .ng-star-inserted{
+        div.list{
             display: flex!important;
             flex-direction: column;
             gap: 20px;
