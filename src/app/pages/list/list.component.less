@@ -1,0 +1,163 @@
+@import '../../app.component.less';
+
+.listCards{
+    padding-top: 50px;
+    background-color: #1F1F1F;
+
+    .row{
+        max-width: 1020px;
+        margin-left: auto;
+        margin-right: auto;
+        gap: 1.5rem;
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+    }
+}
+
+.mat-mdc-card {
+    position: relative;
+    border-radius: 15px;
+    background-color: @color-black;
+}
+
+.box-empty{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #0A0A0A;
+    border: solid 1px #3D3D3D;
+    color: @color-white;
+    max-width: 1024px;
+    border-radius: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    padding: 100px 0;
+    h2{
+        font-size:24px;
+        font-family:Poppins-Bold;
+    }
+
+    p{
+        font-family:Poppins-Regular;
+    }
+}
+
+.mat-mdc-button-base{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+mat-card-title{
+    .title-name();
+}
+
+mat-card-subtitle{
+    color: @color-white;
+    margin-top: 40px;
+    font-size: 18px;
+}
+
+.mat-mdc-card-actions{
+    min-height: initial;
+}
+
+
+button.mat-mdc-icon-button.favorite-active{
+    .mat-icon{
+        color: @color-black;
+    }
+}
+
+.parent-search{
+    margin-top: 150px;
+    width: 100%;
+}
+
+#parent-search > input{
+    background-color: #1F1F1F;
+    border: solid 1px #3D3D3D;
+    border-radius: 5px;
+}
+.mat-mdc-form-field:not(.mat-form-field-disabled) .mat-mdc-floating-label.mdc-floating-label {
+    color: #CACACA;
+}
+
+@media only screen and (max-width: 600px) {
+    .mat-mdc-card-title{
+        font-size: 25px;
+    }
+
+    .listCards {
+        padding: 40px;
+        .row{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+
+    .parent-search{
+        margin-top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        .form-field{
+            width: 90%;
+        }
+    }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 1023px) {
+    .listCards{
+        padding-top: 190px; 
+        .row{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            padding: 0 40px;
+            h3{
+                position: absolute;
+                top: 120px;
+                z-index: 10;
+            }
+        }
+    }
+    .parent-search{
+        margin-top: 117px;
+        position: absolute;
+        right: 0px;
+        display: flex;
+        justify-content: end;
+        padding-right: 40px;
+        .form-field{
+            width: 50%;
+        }
+    }
+
+}
+
+@media only screen and (min-width: 1024px){
+    .parent-search{
+        margin-top: 100px;
+        background-color: #1F1F1F;
+        .form-field{
+            max-width: 500px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            right: -300px;
+            padding-top: 40px;
+        }
+    }
+
+    h3.title-page{
+        position: absolute;
+        top: 135px;
+        z-index: 50;
+    }
+}
+
