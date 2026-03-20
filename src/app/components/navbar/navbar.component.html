@@ -1,54 +1,23 @@
 <mat-toolbar class="toolbar">
-    <a routerLink="/"><img src="../../assets/images/Rick_and_Morty.svg" alt="Rick and Morty"></a>
-    <button 
-        (click)="onButtonClick()"
-        mat-icon-button
-        class="search">
-        <mat-icon>search</mat-icon>
-    </button>
-    <button 
-        (click)="drawer.toggle()"
-        mat-icon-button
-        class="burger">
-        <mat-icon>menu</mat-icon>
-    </button>
-    <div class="deskMenu">
-        <div class="toolBarButton">
-            <button 
-            mat-flat-button
-            class="biggerbutton home"
-            routerLinkActive="mat-accent" 
-            routerLink="/">INÍCIO</button>
-        </div>
-        <div  class="toolBarButton">
-            <button 
-            mat-flat-button
-            class="biggerbutton favorite"
-            routerLinkActive="mat-accent"
-            routerLink="favorites" >FAVORITOS</button>
-            <span class="count-favorites" >{{ favoritesCount }}</span> 
-        </div>
-    </div>
-</mat-toolbar>
-<mat-drawer-container class="containear" [hasBackdrop]="mdcBackdrop">
-<mat-drawer #drawer class="drawer"  [mode]="drawerMode">
-    <div class="sidenav-content">
-        <div class="drawerButton" >
-        <button 
-        (click)="drawer.toggle()"
-        mat-flat-button  
-        routerLinkActive="mat-accent" 
-    
-        routerLink="/" class="biggerbutton home">INÍCIO</button>
-        </div>
-        <div  class="drawerButton">
-        <button 
-        (click)="drawer.toggle()"
-        mat-flat-button  
-        routerLinkActive="mat-accent" 
-        routerLink="favorites" class="biggerbutton favorite">FAVORITOS</button>    
-        <span class="count-favorites" >{{ favoritesCount }}</span> 
-        </div>
-    </div>
-</mat-drawer>
+  <a class="brand" routerLink="/">
+    <img src="assets/images/Rick_and_Morty.svg" alt="Rick and Morty" />
+    <span>{{ 'app.title' | t }}</span>
+  </a>
 
+  <nav class="menu">
+    <a mat-stroked-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      {{ 'nav.home' | t }}
+    </a>
+
+    <a mat-stroked-button routerLink="/favorites" routerLinkActive="active">
+      <mat-icon>favorite</mat-icon>
+      {{ 'nav.favorites' | t }}
+      <span class="counter">{{ favoritesCount$ | async }}</span>
+    </a>
+  </nav>
+
+  <div class="lang-switch">
+    <button mat-button [class.selected]="currentLanguage === 'pt-BR'" (click)="setLanguage('pt-BR')">PT</button>
+    <button mat-button [class.selected]="currentLanguage === 'en-US'" (click)="setLanguage('en-US')">EN</button>
+  </div>
+</mat-toolbar>

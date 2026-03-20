@@ -1,0 +1,48 @@
+<section class="detail-page">
+  <a mat-stroked-button routerLink="/" class="back-btn">
+    <mat-icon>arrow_back</mat-icon>
+    {{ 'details.back' | t }}
+  </a>
+
+  @if (loading) {
+    <div class="feedback">
+      <mat-spinner diameter="42"></mat-spinner>
+    </div>
+  }
+
+  @if (!loading && errorMessage) {
+    <p class="feedback error">{{ errorMessage | t }}</p>
+  }
+
+  @if (!loading && character; as currentCharacter) {
+    <mat-card class="detail-card">
+      <img [src]="currentCharacter.image" [alt]="currentCharacter.name" />
+
+      <div class="content">
+        <h1>{{ currentCharacter.name }}</h1>
+
+        <div class="data-grid">
+          <p><strong>ID:</strong> {{ currentCharacter.id }}</p>
+          <p><strong>{{ 'search.status' | t }}:</strong> {{ currentCharacter.status }}</p>
+          <p><strong>{{ 'search.gender' | t }}:</strong> {{ currentCharacter.gender }}</p>
+          <p><strong>{{ 'details.species' | t }}:</strong> {{ currentCharacter.species }}</p>
+          <p><strong>{{ 'details.type' | t }}:</strong> {{ currentCharacter.type || '-' }}</p>
+          <p><strong>{{ 'details.origin' | t }}:</strong> {{ currentCharacter.origin.name }}</p>
+          <p><strong>{{ 'details.location' | t }}:</strong> {{ currentCharacter.location.name }}</p>
+          <p><strong>{{ 'details.created' | t }}:</strong> {{ currentCharacter.created | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p><strong>URL:</strong> <a [href]="currentCharacter.url" target="_blank" rel="noreferrer">{{ currentCharacter.url }}</a></p>
+        </div>
+
+        <h2>{{ 'details.episodes' | t }} ({{ episodes.length }})</h2>
+        <div class="episodes">
+          @for (episode of episodes; track trackByEpisode($index, episode)) {
+            <article>
+              <h3>{{ episode.episode }} - {{ episode.name }}</h3>
+              <p>{{ 'details.airDate' | t }}: {{ episode.air_date }}</p>
+            </article>
+          }
+        </div>
+      </div>
+    </mat-card>
+  }
+</section>

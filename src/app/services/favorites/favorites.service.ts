@@ -1,37 +1,66 @@
 import { Injectable } from '@angular/core';
-import { TypeCharacter } from '../../interfaces/character.interface'; 
+import { BehaviorSubject, map } from 'rxjs';
+import { FavoriteCharacter } from '../../interfaces/character.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
+  private readonly storageKey = 'rm-favorites';
+  private readonly favoritesSubject = new BehaviorSubject<FavoriteCharacter[]>(this.getInitialFavorites());
 
-  constructor() { }
+  readonly favorites$ = this.favoritesSubject.asObservable();
+  readonly favoritesCount$ = this.favorites$.pipe(map((favorites) => favorites.length));
 
-  getFavorites(data?: TypeCharacter[]): { id: number, name: string, image: string, species?: string }[] {
-    const favorites: { id: number, name: string, image: string, species?: string }[] = [];
-
-    if (data) {
-      data.forEach(character => {
-        const isFavorite = this.isCharacterFavorite(character.id); 
-        if (isFavorite) {
-          favorites.push({
-            id: character.id,
-            name: character.name,
-            image: character.image,
-            species: character.species 
-          });
-        }
-      });
+  addFavorite(character: FavoriteCharacter): void {
+    if (this.isFavorite(character.id)) {
+      return;
     }
-    return favorites;
-  }
-  
-  updateFavoritesInLocalStorage(favorites: { id: number, name: string, image: string, species?: string }[]): void {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
+
+    const updated = [...this.favoritesSubject.value, character];
+    this.updateState(updated);
   }
 
-  private isCharacterFavorite(id: number): boolean {
-    return false;
+  removeFavorite(characterId: number): void {
+    const updated = this.favoritesSubject.value.filter((favorite) => favorite.id !== characterId);
+    this.updateState(updated);
+  }
+
+  toggleFavorite(character: FavoriteCharacter): void {
+    if (this.isFavorite(character.id)) {
+      this.removeFavorite(character.id);
+      return;
+    }
+
+    this.addFavorite(character);
+  }
+
+  isFavorite(characterId: number): boolean {
+    return this.favoritesSubject.value.some((favorite) => favorite.id === characterId);
+  }
+
+  private updateState(favorites: FavoriteCharacter[]): void {
+    this.favoritesSubject.next(favorites);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(this.storageKey, JSON.stringify(favorites));
+    }
+  }
+
+  private getInitialFavorites(): FavoriteCharacter[] {
+    if (typeof localStorage === 'undefined') {
+      return [];
+    }
+
+    const saved = localStorage.getItem(this.storageKey);
+    if (!saved) {
+      return [];
+    }
+
+    try {
+      const parsed = JSON.parse(saved) as FavoriteCharacter[];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
 }

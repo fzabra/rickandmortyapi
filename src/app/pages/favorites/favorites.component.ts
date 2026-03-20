@@ -1,66 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
+import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { FavoritesService } from '../../services/favorites/favorites.service';
-import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialog } from '@angular/material/dialog';
-import { ModalComponent } from '../../components/modal/modal.component';
-
+import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
+import { FavoriteCharacter } from '../../interfaces/character.interface';
+import { TranslatePipe } from '../../pipes/t.pipe';
+import { FavoritesService } from '../../services/favorites/favorites.service';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, RouterLink, MatIconModule],
+  imports: [AsyncPipe, MatButtonModule, MatCardModule, MatIconModule, RouterLink, TranslatePipe],
   templateUrl: './favorites.component.html',
-  styleUrl: './favorites.component.less',
-  providers: [FavoritesService]
+  styleUrl: './favorites.component.less'
 })
-export class FavoritesComponent implements OnInit {
-  favorites: { id: number, name: string, image: string, species?: string }[] = [];
+export class FavoritesComponent {
+  readonly favorites$: Observable<FavoriteCharacter[]> = this.favoritesService.favorites$;
 
-  constructor(
-    private favoritesService: FavoritesService, public dialog: MatDialog) { }
+  constructor(private readonly favoritesService: FavoritesService) {}
 
-    openDialog(enterAnimationDuration: string, exitAnimationDuration: string, favoriteId: number, favoriteName: string): void {
-      const dialogRef = this.dialog.open(ModalComponent, {
-        width: '250px',
-        enterAnimationDuration,
-        exitAnimationDuration,
-        data: { favoriteId, favoriteName }
-      });
-    
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.removeFavorite(result.favoriteId);
-        }
-      });
-    }
-
-  ngOnInit(): void {
-    if (typeof localStorage !== 'undefined') {
-      this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    } else {
-      console.error('localStorage is not available.');
-    }
-    this.loadFavorites();
+  removeFavorite(characterId: number): void {
+    this.favoritesService.removeFavorite(characterId);
   }
 
-  loadFavorites(): void {
-    if (typeof localStorage !== 'undefined') {
-      this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    } else {
-      console.error('localStorage is not available.');
-    }
-  }
-
-  removeFavorite(id: number): void {
-    const index = this.favorites.findIndex(favorite => favorite.id === id);
-    if (index !== -1) {
-      this.favorites.splice(index, 1);
-      this.favoritesService.updateFavoritesInLocalStorage(this.favorites);
-    }
-    window.dispatchEvent(new Event('favoritesChanged'));
+  trackByFavorite(_: number, favorite: FavoriteCharacter): number {
+    return favorite.id;
   }
 }

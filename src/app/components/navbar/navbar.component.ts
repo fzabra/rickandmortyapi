@@ -1,96 +1,41 @@
-import { Component, Renderer2, ChangeDetectorRef  } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
-import { BooleanInput } from '@angular/cdk/coercion';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { FavoritesService } from '../../services/favorites/favorites.service';
+import { AppLanguage, I18nService } from '../../services/i18n/i18n.service';
+import { TranslatePipe } from '../../pipes/t.pipe';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
-    RouterOutlet,
+    AsyncPipe,
     RouterLink,
     RouterLinkActive,
-    MatToolbarModule,
     MatButtonModule,
-    MatSidenavModule,
-    MatIconModule],
+    MatIconModule,
+    MatToolbarModule,
+    TranslatePipe
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.less'
 })
 export class NavbarComponent {
-  pathName = '';
-  favoritesCount: number = 0;
-  mdcBackdrop: BooleanInput = false;
-  drawerMode: MatDrawerMode = "push";
-
-  readonly breakpoint$ = this.breakpointObserver
-  .observe([ '(max-width: 500px)']);
+  readonly favoritesCount$ = this.favoritesService.favoritesCount$;
 
   constructor(
-    private breakpointObserver: BreakpointObserver, 
-    private renderer: Renderer2,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {
-    if (typeof localStorage !== 'undefined') {
-      this.breakpoint$.subscribe(() =>
-        this.breakpointChanges()
-      );
-      this.router.events.subscribe(() => {
-        this.pathName = this.router.url;
-        this.updateFavoritesCount();
-      });
-    } else {
-      console.warn('localStorage is not available. Some features may not work as expected.');
-    }
+    private readonly favoritesService: FavoritesService,
+    private readonly i18nService: I18nService
+  ) {}
+
+  get currentLanguage(): AppLanguage {
+    return this.i18nService.getLanguage();
   }
 
-  ngOnInit() {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('favoritesChanged', () => {
-        this.updateFavoritesCount();
-      });
-    }
-  }
-
-  breakpointChanges(): void {
-
-    if (this.breakpointObserver.isMatched('(max-width: 500px)')) {
-      this.drawerMode = "over";
-      this.mdcBackdrop = true;
-    } else {
-      this.drawerMode = "push";
-      this.mdcBackdrop = false;
-    }
-  }
-
-  updateFavoritesCount(): void {
-    if (typeof localStorage !== 'undefined') {
-      const favoritesData = localStorage.getItem('favorites');
-      if (favoritesData) {
-        const favorites = JSON.parse(favoritesData);
-        this.favoritesCount = favorites.length;
-      } else {
-        this.favoritesCount = 0;
-      }
-    } else {
-      console.warn('localStorage is not available. Favorites count cannot be updated.');
-    }
-  }
-
-  onButtonClick() {
-    const parentSearchElement = document.getElementById('parent-search');
-    if (parentSearchElement) {
-      const currentMarginTop = window.getComputedStyle(parentSearchElement).marginTop;
-      const newMarginTop = currentMarginTop === '150px' ? '0px' : '150px';
-      this.renderer.setStyle(parentSearchElement, 'margin-top', newMarginTop);
-    } else {
-      console.error('Elemento com ID "parent-search" não encontrado.');
-    }
+  setLanguage(language: AppLanguage): void {
+    this.i18nService.setLanguage(language);
   }
 }

@@ -1,41 +1,67 @@
-<app-loading *ngIf="loading"></app-loading>
+<section class="search-page">
+  <header class="hero">
+    <h1>{{ 'search.label' | t }}</h1>
+    <p>{{ 'search.hint' | t }}</p>
 
-<div id="parent-search" class="parent-search">
-    <mat-form-field class="form-field">
-        <mat-label>Pesquisar</mat-label>
-        <input matInput type="text" [formControl]="searchQueryControl">
+    <mat-form-field appearance="outline" class="search-field">
+      <input matInput [placeholder]="'search.placeholder' | t" [formControl]="searchControl" />
+      <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
-</div>
+  </header>
 
-<ng-container *ngIf="filteredCharacters.length > 0; else noResults">
-    <div class="listCards">
-        <div class="row">
-            <h3 class="title-page">INÍCIO</h3>
-            <div *ngFor="let item of filteredCharacters; trackBy: trackByFn">
-                <mat-card class="card-rickandmorty">
-                    <img mat-card-image [src]="item.image" [alt]="item.name" loading="eager">
-                    <mat-card-header>
-                        <mat-card-title>{{ item.name }}</mat-card-title>
-                        <mat-card-subtitle>{{ item.species }}</mat-card-subtitle>
-                    </mat-card-header>
-                    <mat-card-actions>
-                        <button mat-icon-button matTooltip="Favoritos" aria-label="Favoritos" 
-                            (click)="toggleFavorite(item.id, item.name, item.image, item.species)"
-                            [class.favorite-active]="isFavorite(item.id)">
-                            <mat-icon aria-hidden="false" aria-label="Favorite" [style.color]="isFavorite(item.id) ? 'black' : 'white'">
-                                {{ isFavorite(item.id) ? 'favorite' : 'favorite_border' }}
-                            </mat-icon>
-                        </button>
-                    </mat-card-actions>
-                </mat-card>
-            </div>
-        </div>
+  @if (loading) {
+    <div class="feedback">
+      <mat-spinner diameter="42"></mat-spinner>
     </div>
-</ng-container>
+  }
 
-<ng-template #noResults>
-    <div class="box-empty">
-        <h2>Nada foi encontrado</h2>
-        <p>Tente uma nova busca</p>
+  @if (!loading && errorMessage) {
+    <p class="feedback error">{{ errorMessage | t }}</p>
+  }
+
+  @if (!loading && notFound) {
+    <p class="feedback">{{ 'search.empty' | t }}</p>
+  }
+
+  @if (!loading && characters.length > 0) {
+    <h2>{{ 'search.results' | t }} ({{ totalCharacters }})</h2>
+
+    <div class="cards-grid">
+      @for (character of characters; track trackByCharacter($index, character)) {
+        <mat-card
+          class="character-card"
+          tabindex="0"
+          (click)="openDetails(character.id)"
+          (keydown.enter)="openDetails(character.id)"
+        >
+          <img [src]="character.image" [alt]="character.name" loading="lazy" />
+
+          <div class="content">
+            <h3>{{ character.name }}</h3>
+            <p><strong>{{ 'search.gender' | t }}:</strong> {{ character.gender }}</p>
+            <p><strong>{{ 'search.status' | t }}:</strong> {{ character.status }}</p>
+          </div>
+
+          <button
+            mat-flat-button
+            type="button"
+            [class.remove]="isFavorite(character.id)"
+            (click)="onToggleFavorite($event, character)"
+          >
+            <mat-icon>{{ isFavorite(character.id) ? 'heart_broken' : 'favorite' }}</mat-icon>
+            {{ (isFavorite(character.id) ? 'search.favorite.remove' : 'search.favorite.add') | t }}
+          </button>
+        </mat-card>
+      }
     </div>
-</ng-template>
+
+    <mat-paginator
+      class="paginator"
+      [length]="totalCharacters"
+      [pageIndex]="currentPage - 1"
+      [pageSize]="pageSize"
+      [hidePageSize]="true"
+      (page)="onPageChange($event)"
+    ></mat-paginator>
+  }
+</section>

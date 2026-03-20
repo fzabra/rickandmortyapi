@@ -1,107 +1,69 @@
-@import '../../app.component.less';
+.favorites-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
 
-.title-page-row{
-    max-width: 1024px;
-    margin: 5px auto 74px auto
-}
-.trashicon{
-    position: absolute;
-    z-index: 2;
-}
-
-.listCardsFavorites{
-    background-color: #1F1F1F;
-    padding: 40px;
-    div.list{
-        gap: 1.5rem;
-        display: grid;
-        grid-template-columns: 33% 33% 33%;
-        max-width: 1020px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
-    img{
-        width: 100%;
-        border-radius: 5px 5px 0 0;
-    }
-
-    .mat-mdc-card {
-        position: relative;
-        border-radius: 0 0 5px 5px;
-        margin-top: -20px;
-        height: 130px;
-        background-color: @color-black;
-        color: @color-white;
-    }
-
-    mat-card-title{
-        .title-name();
-        height: 70px;
-    }
-
-    mat-card-subtitle{
-        color: @color-white;
-        font-size: 20px;
-    }
+  h1 {
+    margin: 0 0 1rem;
+    color: #e0fbfc;
+    font-family: 'Montserrat', sans-serif;
+  }
 }
 
-.box-empty{
+.empty {
+  color: #adb5bd;
+  padding: 1rem;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border-radius: 0.8rem;
+}
+
+.favorites-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
+.favorite-card {
+  background: #111a22;
+  color: #f8f9fa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+  }
+
+  .content {
+    padding: 0.85rem;
+
+    h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin: 0.4rem 0 0;
+      color: #ced4da;
+    }
+  }
+
+  .actions {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #0A0A0A;
-    border: solid 1px #3D3D3D;
-    color: @color-white;
-    max-width: 1024px;
-    border-radius: 15px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 5%;
-    padding: 100px 0;
-    h2{
-        font-size:24px;
-        font-family:Poppins-Bold;
-    }
+    gap: 0.5rem;
+    margin: 0.8rem;
+    flex-wrap: wrap;
+  }
 
-    p{
-        font-family:Poppins-Regular;
-    }
+  a {
+    background: #8ecae6;
+    color: #102a43;
+  }
+
+  button {
+    color: #f28482;
+    border-color: #f28482;
+  }
 }
-@media only screen and (max-width: 600px) {
-
-    .box-empty{
-        text-align: center;
-        padding: 10px;
-    }
-   
-    .listCardsFavorites{
-        padding: 40px;
-        margin-top: 80px;
-
-        div.list{
-            display: flex!important;
-            flex-direction: column;
-            gap: 20px;
-            .box-empty{
-                padding: 30px;
-                text-align: center;
-            }
-        }
-        mat-card-title{
-            height: 97px;
-            font-size: 25px;
-        }
-    
-        .mat-mdc-card {
-            height: 160px;
-        }   
-    }
-    .title-page-row{
-        max-width: 1024px;
-        margin: 0 auto 24px auto;
-    }
-}
-
-
-

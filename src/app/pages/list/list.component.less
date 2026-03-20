@@ -1,163 +1,107 @@
-@import '../../app.component.less';
-
-.listCards{
-    padding-top: 50px;
-    background-color: #1F1F1F;
-
-    .row{
-        max-width: 1020px;
-        margin-left: auto;
-        margin-right: auto;
-        gap: 1.5rem;
-        display: grid;
-        grid-template-columns: 33% 33% 33%;
-    }
+.search-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
 }
 
-.mat-mdc-card {
-    position: relative;
-    border-radius: 15px;
-    background-color: @color-black;
+.hero {
+  background: radial-gradient(circle at top, #2f3e46, #1d262c);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  h1 {
+    margin: 0;
+    color: #caf0f8;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.4rem;
+  }
+
+  p {
+    margin: 0.5rem 0 1rem;
+    color: #adb5bd;
+  }
 }
 
-.box-empty{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #0A0A0A;
-    border: solid 1px #3D3D3D;
-    color: @color-white;
-    max-width: 1024px;
-    border-radius: 15px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 5%;
-    padding: 100px 0;
-    h2{
-        font-size:24px;
-        font-family:Poppins-Bold;
-    }
-
-    p{
-        font-family:Poppins-Regular;
-    }
+.search-field {
+  width: 100%;
 }
 
-.mat-mdc-button-base{
-    position: absolute;
-    top: 0;
-    right: 0;
+h2 {
+  margin: 0 0 1rem;
+  color: #e0fbfc;
 }
 
-mat-card-title{
-    .title-name();
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
 }
 
-mat-card-subtitle{
-    color: @color-white;
-    margin-top: 40px;
-    font-size: 18px;
-}
+.character-card {
+  background: #111a22;
+  color: #f8f9fa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 
-.mat-mdc-card-actions{
-    min-height: initial;
-}
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+  }
 
+  &:focus-visible {
+    outline: 2px solid #8ecae6;
+    outline-offset: 2px;
+  }
 
-button.mat-mdc-icon-button.favorite-active{
-    .mat-icon{
-        color: @color-black;
-    }
-}
-
-.parent-search{
-    margin-top: 150px;
+  img {
     width: 100%;
+    height: 220px;
+    object-fit: cover;
+  }
+
+  .content {
+    padding: 0.85rem;
+
+    h3 {
+      margin: 0 0 0.45rem;
+      font-size: 1.1rem;
+    }
+
+    p {
+      margin: 0.25rem 0;
+      color: #ced4da;
+      font-size: 0.9rem;
+    }
+  }
+
+  button {
+    margin: 0.8rem;
+    background: #9ef01a;
+    color: #14213d;
+  }
+
+  button.remove {
+    background: #f28482;
+  }
 }
 
-#parent-search > input{
-    background-color: #1F1F1F;
-    border: solid 1px #3D3D3D;
-    border-radius: 5px;
-}
-.mat-mdc-form-field:not(.mat-form-field-disabled) .mat-mdc-floating-label.mdc-floating-label {
-    color: #CACACA;
+.feedback {
+  display: flex;
+  justify-content: center;
+  padding: 1.3rem 0;
+  color: #e0fbfc;
 }
 
-@media only screen and (max-width: 600px) {
-    .mat-mdc-card-title{
-        font-size: 25px;
-    }
-
-    .listCards {
-        padding: 40px;
-        .row{
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-    }
-
-    .parent-search{
-        margin-top: 0;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        .form-field{
-            width: 90%;
-        }
-    }
+.feedback.error {
+  color: #ff6b6b;
 }
 
-@media only screen and (min-width: 601px) and (max-width: 1023px) {
-    .listCards{
-        padding-top: 190px; 
-        .row{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            padding: 0 40px;
-            h3{
-                position: absolute;
-                top: 120px;
-                z-index: 10;
-            }
-        }
-    }
-    .parent-search{
-        margin-top: 117px;
-        position: absolute;
-        right: 0px;
-        display: flex;
-        justify-content: end;
-        padding-right: 40px;
-        .form-field{
-            width: 50%;
-        }
-    }
-
+.paginator {
+  margin-top: 1rem;
+  border-radius: 0.8rem;
 }
-
-@media only screen and (min-width: 1024px){
-    .parent-search{
-        margin-top: 100px;
-        background-color: #1F1F1F;
-        .form-field{
-            max-width: 500px;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            right: -300px;
-            padding-top: 40px;
-        }
-    }
-
-    h3.title-page{
-        position: absolute;
-        top: 135px;
-        z-index: 50;
-    }
-}
-

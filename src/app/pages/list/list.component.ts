@@ -1,131 +1,150 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
-import { RickandmortyService } from '../../services/rickandmorty/rickandmorty.service';
-import { TypeCharacter } from '../../interfaces/character.interface'
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
-import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
-import { FavoritesService } from '../../services/favorites/favorites.service'; 
-import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { LoadingComponent } from '../../components/loading/loading.component'
+import { catchError, debounceTime, distinctUntilChanged, finalize, map, of, startWith, switchMap, tap } from 'rxjs';
+import { Character, FavoriteCharacter } from '../../interfaces/character.interface';
+import { TranslatePipe } from '../../pipes/t.pipe';
+import { FavoritesService } from '../../services/favorites/favorites.service';
+import { RickandmortyService } from '../../services/rickandmorty/rickandmorty.service';
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [MatInputModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule, ReactiveFormsModule, CommonModule, LoadingComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    TranslatePipe
+  ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.less'
 })
 export class ListComponent implements OnInit {
-  searchQueryControl = new FormControl('', Validators.minLength(3)) as FormControl<string>;
-  searchQuery = '';
-  filteredCharacters: TypeCharacter[] = [];
-  favorites: { id: number, name: string, image: string, species?: string }[] = [];
-  loading: boolean = false;
-  page = 1;
-  listCharacters: TypeCharacter[] = [];
-  trackByFn(index: number, item: any): any {
-    return item.id;
-  }
+  private readonly destroyRef = inject(DestroyRef);
+
+  readonly searchControl = new FormControl('', { nonNullable: true });
+
+  characters: Character[] = [];
+  favoriteIds = new Set<number>();
+
+  loading = false;
+  notFound = false;
+  errorMessage = '';
+
+  totalCharacters = 0;
+  currentPage = 1;
+  readonly pageSize = 20;
+
+  private currentQuery = '';
+
   constructor(
-    private rickandmortyService: RickandmortyService,
-    private favoritesService: FavoritesService,
-    private route: Router,
-    private cdr: ChangeDetectorRef
+    private readonly rickandmortyService: RickandmortyService,
+    private readonly favoritesService: FavoritesService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
-    this.getCharacters(1);
-    this.searchQueryControl.valueChanges.pipe(
-      debounceTime(300)
-    ).subscribe((value) => {
-      this.searchCharacters();
-    });
-    this.loadCharacters();
+    this.favoritesService.favorites$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((favorites) => {
+        this.favoriteIds = new Set(favorites.map((favorite) => favorite.id));
+      });
+
+    this.searchControl.valueChanges
+      .pipe(
+        startWith(this.searchControl.value),
+        map((query) => query.trim()),
+        debounceTime(350),
+        distinctUntilChanged(),
+        tap((query) => {
+          this.currentQuery = query;
+          this.currentPage = 1;
+        }),
+        switchMap(() => this.fetchCharacters(1)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe();
   }
 
-  getCharacters(page: number): Observable<any> {
-    return this.rickandmortyService.getListCharacters(page).pipe(
-        map((response: any) => {
-            return {
-                results: response.results,
-                totalPages: response.info.pages
-            };
-        })
-    );
+  onPageChange(event: PageEvent): void {
+    const page = event.pageIndex + 1;
+    this.fetchCharacters(page)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
-  
-  loadCharacters() {
-    let totalPages = 0;
-    let currentPage = 1;
-    this.loading = true;
-  
-    const loadPage = () => {
-      this.getCharacters(currentPage).subscribe((response: any) => {
-        this.listCharacters = this.listCharacters.concat(response.results);
-        this.filteredCharacters = this.listCharacters;
-        this.favorites = this.favoritesService.getFavorites(this.listCharacters);
-        currentPage++;
-  
-        if (currentPage <= totalPages) {
-          loadPage();
-        } else {
-          this.loading = false;
-        }
-      });
+
+  toggleFavorite(character: Character): void {
+    const favorite: FavoriteCharacter = {
+      id: character.id,
+      name: character.name,
+      image: character.image,
+      gender: character.gender
     };
-  
-    setTimeout(() => {
-      this.getCharacters(currentPage).subscribe((response: any) => {
-        totalPages = response.totalPages;
-        this.listCharacters = response.results;
-        this.filteredCharacters = this.listCharacters;
-        this.favorites = this.favoritesService.getFavorites(this.listCharacters);
-        currentPage++;
-        if (currentPage <= totalPages) {
-          loadPage();
-        } else {
-          this.loading = false;
-        }
-      });
-    }, 1000);
-  }
-  
-  
-  searchCharacters() {
-    const query = this.searchQueryControl.value.trim().toLowerCase();
-    this.filteredCharacters = this.listCharacters.filter(character =>
-      character.name.toLowerCase().includes(query)
-    );
-  }
-    
-  toggleFavorite(id: number, name: string, image: string, species?: string) {
-    const index = this.favorites.findIndex(favorite => favorite.id === id);
-    if (index > -1) {
-        this.favorites.splice(index, 1);
-    } else {
-        this.favorites.push({ id, name, image, species });
-    }
-    localStorage.setItem('favorites', JSON.stringify(this.favorites));
-    window.dispatchEvent(new Event('favoritesChanged'));
+
+    this.favoritesService.toggleFavorite(favorite);
   }
 
-  isFavorite(itemId: number): boolean {
-    if (typeof localStorage !== 'undefined') {
-        const storedFavorites = localStorage.getItem('favorites');
-        if (storedFavorites) {
-            const favorites = JSON.parse(storedFavorites);
-            return favorites.some((favorite: any) => favorite.id === itemId);
+  onToggleFavorite(event: MouseEvent, character: Character): void {
+    event.stopPropagation();
+    this.toggleFavorite(character);
+  }
+
+  openDetails(characterId: number): void {
+    this.router.navigate(['/character', characterId]);
+  }
+
+  isFavorite(characterId: number): boolean {
+    return this.favoriteIds.has(characterId);
+  }
+
+  trackByCharacter(_: number, character: Character): number {
+    return character.id;
+  }
+
+  private fetchCharacters(page: number) {
+    this.loading = true;
+    this.errorMessage = '';
+    this.notFound = false;
+
+    return this.rickandmortyService.getCharacters(page, this.currentQuery).pipe(
+      tap((response) => {
+        this.characters = response.results;
+        this.totalCharacters = response.info.count;
+        this.currentPage = page;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        this.characters = [];
+        this.totalCharacters = 0;
+        this.currentPage = 1;
+
+        if (error.status === 404) {
+          this.notFound = true;
+        } else {
+          this.errorMessage = 'search.error';
         }
-    }
-    return false;
+
+        return of(null);
+      }),
+      map(() => void 0),
+      finalize(() => {
+        this.loading = false;
+      })
+    );
   }
 }
-
-
